@@ -1,3 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="test">
+    <select v-model="all">
+        <option v-for="yx in YX">
+            {{yx.text}}
+        </option>
+    </select>
+
+    <select>
+        <option v-for="zy in selection">
+            {{zy.text}}
+        </option>
+    </select>
+
+
+</div>
+<script type="text/javascript" src="js/vue.js"></script>
+<script>
+var vm = new Vue({
+    el:'#test',
+    data:{
+        all:'',
+        YX:[
+            {
+                text:'计信院',
+                ZY:[
+                    {text:'软件工程'},
+                    {text:'计算机科学与技术'},
+                    {text:"信息安全"},
+                ]
+            },
+            { 
+                text:'商学院',
+                ZY:[
+                    {text:'旅游管理'},
+                    {text:'工商管理'},
+                    {text:"行政管理"},
+                ]
+            },       
+                        { 
+                text:'商学院1',
+                ZY:[
+                    {text:'旅游管理1'},
+                    {text:'工商管理1'},
+                    {text:"行政管理1"},
+                ]
+            },   
+                        { 
+                text:'商学院2',
+                ZY:[
+                    {text:'旅游管理2'},
+                    {text:'工商管理2'},
+                    {text:"行政管理2"},
+                ]
+            },   
+        ]
+    },
+    computed:{
+        selection: function() {
+            for (var i = 0; i < this.YX.length; i++) {
+                if (this.YX[i].text === this.all) {
+                    console.log(this.YX[i].ZY)
+                    return this.YX[i].ZY;
+                }
+            }
+        }
+    }
+});
+</script>
+</body>
+</html>
+
+
+
 <template>
   <div>
     <div class="myinfo">
