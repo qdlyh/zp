@@ -5,21 +5,21 @@
         <span>市:</span>
         <select v-model="selected">
           <option v-for="(data,index) in cityData" :key="index">
-            {{data.text}}
+            {{data.title}}
           </option>
         </select>
         <span>区:</span>
-        <select>
-          <option v-for="(area,index) in selection" :key="index">
-            {{area.text}}
+        <select ref="myArea" @change="area()">
+          <option v-for="(data,index) in selection" :key="index">
+            {{data.text}}
           </option>
         </select>
         <span>类型:</span>
         <select name="" v-model="search">
-          <option value="" v-for="(item,index) in searchData" :key="index">{{item.title}}</option>
+          <option value="" v-for="(item,index) in searchData" :key="index" :value="item.title">{{item.title}}</option>
         </select>
       </form>
-      <span>值：{{search}}</span>
+      <span>值：{{selected}}{{myarea}}{{search}}</span>
       <div class="work-list">
         <div class="list-box" v-for="(item,index) in listData" :key="index">
           <router-link to="/mydeliver">
@@ -45,22 +45,25 @@
 export default {
   data() {
     return {
-      myarea:'',
+      myarea: '市区',
       search: '所有',
       searchData: [{ title: '所有' }, { title: '全职' }, { title: '兼职' }],
       selected: '城市',
       cityData: [
         {
-          text: '城市',
+          title: '城市',
           area: [
             {
               text: '市区'
-            }
+            },
           ]
         },
         {
-          text: '广州市',
+          title: '广州市',
           area: [
+            {
+              text: '市区0'
+            },
             {
               text: '天河区'
             },
@@ -73,8 +76,11 @@ export default {
           ]
         },
         {
-          text: '广州市1',
+          title: '广州市1',
           area: [
+            {
+              text: '市区1'
+            },
             {
               text: '天河区1'
             },
@@ -87,8 +93,11 @@ export default {
           ]
         },
         {
-          text: '广州市2',
+          title: '广州市2',
           area: [
+            {
+              text: '市区2'
+            },
             {
               text: '天河区2'
             },
@@ -104,12 +113,23 @@ export default {
       list: [
         {
           src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司',
+          title: '嘻嘻哈哈有限公司兼职',
           itemp: '合资|100-150|房地产',
           itemq: '助理会计',
           itemw: '3000-4500',
           iteme:
-            '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+          '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+          itemr: '广东省广州市白云区鸣泉居',
+          jz: '广州市,市区：白云区,全职,所有城市'
+        },
+        {
+          src: require('../../images/logo.png'),
+          title: '嘻嘻哈哈有限公司兼职',
+          itemp: '合资|100-150|房地产',
+          itemq: '助理会计',
+          itemw: '3000-4500',
+          iteme:
+          '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
           jz: '城市：广州市,市区：白云区,全职,所有'
         },
@@ -120,29 +140,18 @@ export default {
           itemq: '助理会计',
           itemw: '3000-4500',
           iteme:
-            '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
-          itemr: '广东省广州市白云区鸣泉居',
-          jz: '城市：广州市,市区：白云区,全职,所有'
-        },
-        {
-          src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司',
-          itemp: '合资|100-150|房地产',
-          itemq: '助理会计',
-          itemw: '3000-4500',
-          iteme:
-            '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+          '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
           jz: '城市：广州市,市区：天河,全职,所有'
         },
         {
           src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司',
+          title: '嘻嘻哈哈有限公司全职',
           itemp: '合资|100-150|房地产',
           itemq: '助理会计',
           itemw: '3000-4500',
           iteme:
-            '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+          '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
           jz: '城市：佛山市,顺德区：天河,兼职,所有'
         },
@@ -153,7 +162,7 @@ export default {
           itemq: '助理会计',
           itemw: '3000-4500',
           iteme:
-            '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+          '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
           jz: '城市：佛山市,哈哈区：天河,兼职,所有'
         },
@@ -164,37 +173,93 @@ export default {
           itemq: '助理会计',
           itemw: '3000-4500',
           iteme:
-            '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+          '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
           jz: '城市：佛山市,顺德区：天河,兼职,所有'
         }
-      ]
+      ],
+      // list: [
+      //   {
+      //     src: require('../../images/logo.png'),
+      //     title: '嘻嘻哈哈有限公司兼职',
+      //     itemp: '合资|100-150|房地产',
+      //     itemq: '助理会计',
+      //     itemw: '3000-4500',
+      //     iteme:
+      //       '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+      //     itemr: '广东省广州市白云区鸣泉居',
+      //     address: [
+      //       {
+      //         jz: '城市：佛山市,顺德区：天河,全职,所有'
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     src: require('../../images/logo.png'),
+      //     title: '嘻嘻哈哈有限公司全职',
+      //     itemp: '合资|100-150|房地产',
+      //     itemq: '助理会计',
+      //     itemw: '3000-4500',
+      //     iteme:
+      //       '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+      //     itemr: '广东省广州市白云区鸣泉居',
+      //     address: [
+      //       {
+      //         jz: '城市：佛山市,顺德区：天河,兼职,所有'
+      //       }
+      //     ]
+      //   }
+      // ]
+    }
+  },
+  methods: {
+    area() {
+      let obj = this.$refs.myArea; //定位id
+      let index = obj.selectedIndex; // 选中索引
+      let text = obj.options[index].text; // 选中文本
+      this.myarea = text;
+      //console.log(this.myarea)
     }
   },
   computed: {
-    selection: {
-      get() {
-        return this.cityData.filter(item => {
-          console.log(this.selected)
-          return item.text == this.selected;
-        })[0].area
+    selection() {
+      for (let i = 0; i < this.cityData.length; i++) {
+        if (this.cityData[i].title == this.selected) {
+          console.log(this.cityData[i].area[0].text)
+          this.myarea = this.cityData[i].area[0].text;
+          return this.cityData[i].area;
+        }
+        this.$refs.myArea[0].selected = true;
+        // console.log(this.cityData[i].area[0].text)
+        // this.myarea = this.cityData[i].area[0].text;
       }
     },
     listData() {
       //console.log(this.selected)
       var search = this.search
-      var all = []
+      //console.log(search)
+      var all = [];
       if (search) {
         for (var i = 0; i < this.list.length; i++) {
           if (this.list[i].jz.toLowerCase().indexOf(search) != -1) {
             //console.log(this.list[i])
-            all.push(this.list[i])
+            all.push(this.list[i]);
           }
         }
-        return all
+        return all;
       }
-      return this.list
+      return this.list;
     }
+    // listData() {
+    //   var search = this.search
+    //   if (search) {
+    //     return this.list.filter(function(product) {
+    //       console.log(product.jz)
+    //       return product.jz.toLowerCase().indexOf(search) > -1
+    //     })
+    //   }
+    //   return this.list
+    // }
   }
 }
 </script>
@@ -278,5 +343,7 @@ $text: #535353;
   }
 }
 </style>
+
+
 
 
