@@ -9,59 +9,48 @@
                     <div>
                         <span>企业名称：</span>
                         <p>{{item.title}}</p>
-                        <hr/>
                     </div>
                     <div>
                         <span>企业性质：</span>
                         <p>{{item.hz}}</p>
-                        <hr/>
                     </div>
                     <div>
                         <span>经营范围：</span>
                         <p>{{item.jy}}</p>
-                        <hr/>
                     </div>
                     <div>
                         <span>联系人
                             <i class="sign-i">：</i>
                         </span>
                         <p>{{item.lxr}}</p>
-                        <hr/>
                     </div>
                     <div>
                         <span>联系电话：</span>
                         <p>{{item.phone}}</p>
-                        <hr/>
                     </div>
                     <div>
                         <span>企业地址：</span>
                         <p>{{item.dz}}</p>
-                        <hr/>
                     </div>
-                    <div>
+                    <div class="sign-div">
                         <span class="sign-span">企业描述：</span>
                         <p class="sign-p">{{item.ms}}</p>
-                        <hr/>
                     </div>
                     <div>
                         <span>招聘岗位：</span>
                         <p>{{item.zp}}</p>
-                        <hr/>
                     </div>
                     <div>
                         <span>工作年限：</span>
                         <p>{{item.gz}}</p>
-                        <hr/>
                     </div>
                     <div>
                         <span>岗位薪资：</span>
                         <p>{{item.xz}}</p>
-                        <hr/>
                     </div>
-                    <div>
+                    <div class="sign-div">
                         <span class="sign-span">岗位描述：</span>
                         <p class="sign-p">{{item.gwms}}</p>
-                        <hr/>
                     </div>
                     <div class="btn-blue btn-sign">
                         <router-link to="/findwork">发送简历</router-link>
@@ -73,27 +62,27 @@
 </template>
 <script>
 export default {
-  data() {
-    return {
-      list: [
-        {
-          src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司',
-          hz: '合资',
-          gm: '100-15/人',
-          jy: '房地产',
-          lxr: '李佳刚',
-          phone: '13030217212',
-          dz: '广东省广州市白云区',
-          ms: '要负责公司账单要负责公司账单要负责公司账单要负责公司账单要负责公司账单主要负责公司账单',
-          zp: '高级搬砖工程师',
-          gz: '3年以上',
-          xz: '5000/7000/月',
-          gwms: '要负责公司账单要负责公司账单要负责公司账单要负责公司账单要负责公司账单主要负责公司账单'
+    data() {
+        return {
+            list: [
+                {
+                    src: require('../../images/logo.png'),
+                    title: '嘻嘻哈哈有限公司',
+                    hz: '合资',
+                    gm: '100-15/人',
+                    jy: '房地产',
+                    lxr: '李佳刚',
+                    phone: '13030217212',
+                    dz: '广东省广州市白云区',
+                    ms: '要负责公司账单要负责公司账单要负责公司账单要负责公司账单要负责公司账单主要负责公司账单',
+                    zp: '高级搬砖工程师',
+                    gz: '3年以上',
+                    xz: '5000/7000/月',
+                    gwms: '要负责公司账单要负责公司账单要负责公司账单要负责公司账单要负责公司账单主要负责公司账单'
+                }
+            ]
         }
-      ]
     }
-  }
 }
 </script>
 <style lang="scss" scoped>
@@ -118,7 +107,9 @@ $text: #535353;
   border-radius: 0 0 10px 10px;
   background: rgba(255, 255, 255, 0.6);
   div {
+    height: 30px;
     margin-top: 10px;
+    border-bottom: 0.5px solid #555555;
   }
   span {
     color: $text;
@@ -141,8 +132,8 @@ $text: #535353;
     margin-bottom: 5px;
     display: flex;
   }
-  hr {
-    border-top: 0.5px solid #81959c;
+  .sign-div {
+    height: 50px;
   }
   .sign-span {
     width: 30%;
@@ -158,8 +149,9 @@ $text: #535353;
   }
 }
 .btn-sign {
+    border: none !important;
   a {
-    margin-top: 30px;
+    margin: 30px 0;
   }
 }
 </style>
