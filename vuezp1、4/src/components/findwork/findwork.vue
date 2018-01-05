@@ -29,10 +29,11 @@
             <span class="right">
               <h3>{{item.title}}</h3>
               <p class="sign-p">{{item.itemp}}</p>
-              <i>{{item.itemq}}&nbsp;&nbsp;&nbsp;月薪：{{item.itemw}}元</i>
+              <i>{{item.itemq}}</i>
+              <i class="sign-i">月薪：{{item.itemw}}元</i>
               <p class="describe">{{item.iteme}}</p>
               <p>{{item.itemr}}</p>
-              <p style="display: none;">{{item.jz}}</p>
+              <p>{{item.jz}}</p>
             </span>
           </router-link>
         </div>
@@ -112,18 +113,18 @@ export default {
       list: [
         {
           src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司',
+          title: '嘻嘻哈哈有限公司兼职',
           itemp: '合资|100-150|房地产',
           itemq: '助理会计',
           itemw: '3000-4500',
           iteme:
           '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
-          jz: '广州市,市区：白云区,全职,所有'
+          jz: '广州市,市区：白云区,全职,所有城市'
         },
         {
           src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司1',
+          title: '嘻嘻哈哈有限公司兼职',
           itemp: '合资|100-150|房地产',
           itemq: '助理会计',
           itemw: '3000-4500',
@@ -134,7 +135,7 @@ export default {
         },
         {
           src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司2',
+          title: '嘻嘻哈哈有限公司',
           itemp: '合资|100-150|房地产',
           itemq: '助理会计',
           itemw: '3000-4500',
@@ -145,7 +146,7 @@ export default {
         },
         {
           src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司全职a',
+          title: '嘻嘻哈哈有限公司全职',
           itemp: '合资|100-150|房地产',
           itemq: '助理会计',
           itemw: '3000-4500',
@@ -156,7 +157,7 @@ export default {
         },
         {
           src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司b',
+          title: '嘻嘻哈哈有限公司',
           itemp: '合资|100-150|房地产',
           itemq: '助理会计',
           itemw: '3000-4500',
@@ -165,6 +166,17 @@ export default {
           itemr: '广东省广州市白云区鸣泉居',
           jz: '城市：佛山市,哈哈区：天河,兼职,所有'
         },
+        {
+          src: require('../../images/logo.png'),
+          title: '嘻嘻哈哈有限公司',
+          itemp: '合资|100-150|房地产',
+          itemq: '助理会计',
+          itemw: '3000-4500',
+          iteme:
+          '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+          itemr: '广东省广州市白云区鸣泉居',
+          jz: '城市：佛山市,顺德区：天河,兼职,所有'
+        }
       ],
       // list: [
       //   {
@@ -302,10 +314,6 @@ $text: #535353;
         overflow: hidden;
       }
       i {
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-        overflow: hidden;
         font-size: 14px;
         color: #928a75;
       }
@@ -325,6 +333,9 @@ $text: #535353;
         overflow: hidden;
         padding-left: 20px;
       }
+      .sign-i {
+        padding-left: 10px;
+      }
       .sign-p {
         padding-left: 20px;
       }
@@ -332,5 +343,7 @@ $text: #535353;
   }
 }
 </style>
+
+
 
 

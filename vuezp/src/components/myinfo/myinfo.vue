@@ -1,86 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
-<body>
-    <div id="test">
-    <select v-model="all">
-        <option v-for="yx in YX">
-            {{yx.text}}
-        </option>
-    </select>
-
-    <select>
-        <option v-for="zy in selection">
-            {{zy.text}}
-        </option>
-    </select>
-
-
-</div>
-<script type="text/javascript" src="js/vue.js"></script>
-<script>
-var vm = new Vue({
-    el:'#test',
-    data:{
-        all:'',
-        YX:[
-            {
-                text:'计信院',
-                ZY:[
-                    {text:'软件工程'},
-                    {text:'计算机科学与技术'},
-                    {text:"信息安全"},
-                ]
-            },
-            { 
-                text:'商学院',
-                ZY:[
-                    {text:'旅游管理'},
-                    {text:'工商管理'},
-                    {text:"行政管理"},
-                ]
-            },       
-                        { 
-                text:'商学院1',
-                ZY:[
-                    {text:'旅游管理1'},
-                    {text:'工商管理1'},
-                    {text:"行政管理1"},
-                ]
-            },   
-                        { 
-                text:'商学院2',
-                ZY:[
-                    {text:'旅游管理2'},
-                    {text:'工商管理2'},
-                    {text:"行政管理2"},
-                ]
-            },   
-        ]
-    },
-    computed:{
-        selection: function() {
-            for (var i = 0; i < this.YX.length; i++) {
-                if (this.YX[i].text === this.all) {
-                    console.log(this.YX[i].ZY)
-                    return this.YX[i].ZY;
-                }
-            }
-        }
-    }
-});
-</script>
-</body>
-</html>
-
-
-
 <template>
   <div>
-    <div class="myinfo">
+    <div class="myinfo" v-for="(item,index) in list" :key="index">
       <form action="">
         <div class="top-img">
           <div class="file-box">
@@ -92,56 +12,108 @@ var vm = new Vue({
         <div class="my-missage">
           <div>
             <span>姓名：</span>
-            <input type="text">
+            <input type="text" maxlength="10" v-model.trim="item.name">
           </div>
           <div>
             <span>性别：</span>
             <select name="select">
-              <option value="">男</option>
-              <option value="">女</option>
+              <option value="" v-for="(item,index) in list[0].sexbox">{{item.sex}}</option>
             </select>
           </div>
           <div>
             <span>联系：</span>
-            <input type="text">
+            <input type="number" v-model="item.phone" oninput='if(value.length>11)value=value.slice(0,11)'>
           </div>
           <div>
             <span>工龄：</span>
             <select name="select">
-              <option value="">一年以下</option>
-              <option value="">一年</option>
-              <option value="">二年</option>
-              <option value="">三年</option>
+              <option value="" v-for="(item,index) in list[0].work">{{item.time}}</option>
             </select>
           </div>
           <div>
             <span>职称：</span>
-            <input type="text">
+            <input type="text" v-model.trim="item.position" maxlength="15">
           </div>
           <div>
             <span>资格：</span>
             <select name="select">
-              <option value="">搬砖</option>
-              <option value="">包工头</option>
-              <option value="">开发商</option>
+              <option value="" v-for="(item,index) in list[0].prove">{{item.proveName}}</option>
             </select>
           </div>
           <div>
             <span class="sign">描述：</span>
-            <textarea name="text" id="" cols="30" rows="10"></textarea>
+            <span class="describe-box">
+              <textarea name="text" v-model="item.describe" cols="30" rows="10" maxlength="200"></textarea>
+              <i class="countText">{{countText}}/200</i>
+            </span>
           </div>
-          <div class="btn-blue">
-            <router-link to="/findwork">保存</router-link>
+          <div class="btn-blue" @click="submit()">
+            <router-link to="">保存</router-link>
           </div>
         </div>
       </form>
     </div>
+    <Dialog :popup="popup" :text="text"></Dialog>
   </div>
 </template>
 <script>
+import Dialog from "../../common/Dialog";
 export default {
+  components: {
+    Dialog
+  },
   data() {
-    return {}
+    return {
+      list: [
+        {
+          name: 'lyh',
+          sexbox: [
+            {
+              sex: '男'
+            },
+            {
+              sex: '女'
+            },
+          ],
+          phone: '13030212212',
+          work: [
+            {
+              time: '一年以下'
+            },
+            {
+              time: '一年'
+            },
+            {
+              time: '两年'
+            },
+            {
+              time: '三年'
+            },
+            {
+              time: '三年以上'
+            },
+          ],
+          position: '搬砖工程师',
+          prove: [
+            {
+              proveName: '搬砖'
+            },
+            {
+              proveName: '搬砖工程师'
+            },
+            {
+              proveName: '包工头'
+            },
+            {
+              proveName: '开发商'
+            }
+          ],
+          describe: '留言留言噢噢噢噢噢噢噢噢哦哦哦哦哦哦哦哦哦'
+        }
+      ],
+      popup: false,
+      text: '',
+    }
   },
   mounted() {
     var $file = document.getElementById('file')
@@ -160,16 +132,73 @@ export default {
       }
       var reader = new FileReader()
       reader.readAsDataURL(file)
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         $fileImg.src = this.result
       }
     }
-    $file.onchange = readFile
+    $file.onchange = readFile;
+  },
+  methods: {
+    submit() {
+      let have = true;
+      if (this.list[0].name.length == 0 || this.list[0].phone.length == 0 || this.list[0].position.length == 0) {
+        // console.log(this.list[0].name)
+        //alert('基本信息不能为空')
+        have = false;
+        this.popup = true;
+        this.text = '请填写完整的信息'
+        return false;
+      }
+      if (!(/^1[345789][0-9]{9}$/.test(this.list[0].phone))) {
+        //console.log('手机号错误');
+        have = false;
+        this.popup = true;
+        this.text = '手机号码错误'
+        return false;
+      }
+      if (have) {
+        this.popup = true;
+        this.text = '保存成功'
+      }
+    },
+  },
+  computed: {
+    countText() {
+      if (this.list[0].describe.length != 0) {
+        return this.list[0].describe.length;
+      }
+      return 0;
+    }
+  },
+  watch: {
+    list: {
+      handler(data) {
+        console.log(data);
+      },
+      deep: true
+    },
+    popup: {
+      handler(obj) {
+        //console.log(obj);
+        if (this.popup) {
+          setTimeout(() => {
+            this.popup = false;
+          }, 1500)
+        }
+      },
+      deep: true
+    },
   }
 }
 </script>
 <style lang="scss" scoped>
 $text: #535353;
+input,
+select {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
 .myinfo {
   padding: 10px;
 }
@@ -201,21 +230,22 @@ $text: #535353;
     outline: none;
     border: 0.5px solid #ccc;
     height: 20px;
-    width: 75%;
+    width: 80%;
     color: $text;
     font-size: 16px;
     padding: 10px;
     margin-top: 10px;
+    height: 40px;
   }
   textarea {
     @extend input;
-    height: 50px;
+    height: 70px;
     resize: none;
   }
   select {
     @extend input;
     height: 40px;
-    width: 82%;
+    width: 80%;
     padding: 0 0 0 10px;
   }
   span {
@@ -225,6 +255,15 @@ $text: #535353;
   .sign {
     position: relative;
     top: -55px;
+  }
+  .describe-box {
+    position: relative;
+    .countText {
+      position: absolute;
+      right: 0;
+      bottom: -20px;
+      color: #a4a391;
+    }
   }
 }
 </style>

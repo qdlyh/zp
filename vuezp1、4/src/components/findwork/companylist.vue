@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="myinfo" v-for="(item,index) in list" :key="index">
+        <div class="myinfo" v-for="(item,index) in list" key="index">
             <form action="">
                 <div class="top-img">
                     <img v-lazy="item.src">

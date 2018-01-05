@@ -1,25 +1,26 @@
 <template>
-  <div>
-    <div class="findwork">
-      <div class="work-list">
-        <div class="list-box" v-for="(item,index) in list" :key="index">
-          <router-link to="/companylist">
-            <span class="left">
-              <img v-lazy="item.src" alt="">
-            </span>
-            <span class="right">
-              <h3>{{item.title}}</h3>
-              <p class="sign-p">{{item.itemp}}</p>
-              <i>{{item.itemq}}&nbsp;&nbsp;&nbsp;月薪：{{item.itemw}}元</i>
-              <p class="describe">{{item.iteme}}</p>
-              <p>{{item.itemr}}</p>
-              <p class="time">投递时间：{{item.time}}</p>
-            </span>
-          </router-link>
+    <div>
+        <div class="findwork">
+            <div class="work-list">
+                <div class="list-box" v-for="(item,index) in list" :key="index">
+                    <router-link to="/companylist">
+                        <span class="left">
+                            <img v-lazy="item.src" alt="">
+                        </span>
+                        <span class="right">
+                            <h3>{{item.title}}</h3>
+                            <p class="sign-p">{{item.itemp}}</p>
+                            <i>{{item.itemq}}</i>
+                            <i class="sign-i">月薪：{{item.itemw}}元</i>
+                            <p class="describe">{{item.iteme}}</p>
+                            <p>{{item.itemr}}</p>
+                            <p class="time">投递时间：{{item.time}}</p>
+                        </span>
+                    </router-link>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 <script>
 export default {
@@ -34,7 +35,7 @@ export default {
           itemw: '3000-4500',
           time: '2017-11-11',
           iteme:
-          '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+            '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居'
         },
         {
@@ -45,7 +46,7 @@ export default {
           itemw: '3000-4500',
           time: '2017-11-11',
           iteme:
-          '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+            '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居'
         },
         {
@@ -56,7 +57,7 @@ export default {
           itemw: '3000-4500',
           time: '2017-11-11',
           iteme:
-          '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+            '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居'
         },
         {
@@ -67,7 +68,7 @@ export default {
           itemw: '3000-4500',
           time: '2017-11-11',
           iteme:
-          '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+            '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居'
         },
         {
@@ -78,7 +79,7 @@ export default {
           itemw: '3000-4500',
           time: '2017-11-11',
           iteme:
-          '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+            '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居'
         }
       ]
@@ -121,10 +122,6 @@ $text: #535353;
         overflow: hidden;
       }
       i {
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-        overflow: hidden;
         font-size: 14px;
         color: #928a75;
       }
@@ -143,6 +140,9 @@ $text: #535353;
         -webkit-line-clamp: 2;
         overflow: hidden;
         padding-left: 20px;
+      }
+      .sign-i {
+        padding-left: 10px;
       }
       .sign-p {
         padding-left: 20px;
