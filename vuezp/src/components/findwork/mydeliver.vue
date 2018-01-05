@@ -1,28 +1,36 @@
 <template>
   <div>
-    <div class="findwork">
-      <div class="work-list">
-        <div class="list-box" v-for="(item,index) in list" :key="index">
-          <router-link to="/companylist">
-            <span class="left">
-              <img v-lazy="item.src" alt="">
-            </span>
-            <span class="right">
-              <h3>{{item.title}}</h3>
-              <p class="sign-p">{{item.itemp}}</p>
-              <i>{{item.itemq}}&nbsp;&nbsp;&nbsp;月薪：{{item.itemw}}元</i>
-              <p class="describe">{{item.iteme}}</p>
-              <p>{{item.itemr}}</p>
-              <p class="time">投递时间：{{item.time}}</p>
-            </span>
-          </router-link>
+    <div id="pullTo">
+      <pull-to :top-load-method="refresh" :bottom-load-method="loadmore">
+        <div class="findwork">
+          <div class="work-list">
+            <div class="list-box" v-for="(item,index) in list" :key="index">
+              <router-link to="/companylist">
+                <span class="left">
+                  <img v-lazy="item.src" alt="">
+                </span>
+                <span class="right">
+                  <h3>{{item.title}}</h3>
+                  <p class="sign-p">{{item.itemp}}</p>
+                  <i>{{item.itemq}}&nbsp;&nbsp;&nbsp;月薪：{{item.itemw}}元</i>
+                  <p class="describe">{{item.iteme}}</p>
+                  <p>{{item.itemr}}</p>
+                  <p class="time">投递时间：{{item.time}}</p>
+                </span>
+              </router-link>
+            </div>
+          </div>
         </div>
-      </div>
+      </pull-to>
     </div>
   </div>
 </template>
 <script>
+import PullTo from "vue-pull-to";
 export default {
+  components: {
+    PullTo
+  },
   data() {
     return {
       list: [
@@ -83,20 +91,46 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    refresh(loaded) {
+      setTimeout(() => {
+        //this.dataList.reverse();
+        loaded('done');
+      }, 2000);
+    },
+    loadmore(loaded) {
+      setTimeout(() => {
+        //this.dataList = this.dataList.concat(this.dataList);
+        loaded('done');
+      }, 2000);
+    },
   }
 }
 </script>
 <style lang="scss" scoped>
 $text: #535353;
+
+#pullTo {
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  bottom: 0px;
+  overflow: hidden;
+}
+
 .findwork {
   .work-list {
     padding: 10px;
+    div:first-child {
+      margin-top: 0px;
+    }
     .list-box {
       width: 100%;
       background: #fff;
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.7);
-      margin-bottom: 10px;
+      margin-top: 10px;
       a {
         display: flex;
         justify-content: space-between;
@@ -158,5 +192,7 @@ $text: #535353;
   }
 }
 </style>
+
+
 
 
