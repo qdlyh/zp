@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'app',
+  name: 'app'
 }
 </script>
 
@@ -33,6 +33,7 @@ i {
   z-index: -1;
 }
 
+
 /* 按钮 */
 .btn-blue {
   margin: 30px 0;
@@ -56,23 +57,8 @@ i {
   }
 }
 
-.action-block {
-  position: relative;
-  &:before {
-    content:" ";
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    background: url(./images/loadings.gif);
-    background-size:15px 15px;
-    z-index: 9999;
-    left: 35%;
-    top: 35%;
-  }
-}
-
 /* 懒加载图片过渡效果 */
-img[lazy='loaded'] {
+img[lazy="loaded"] {
   animation: fade 0.5s;
 }
 @keyframes fade {
@@ -84,20 +70,21 @@ img[lazy='loaded'] {
   }
 }
 
-img[lazy='loading'] {
-  /*width: 100px;*/
-  background-position: center center !important;
-  background: url('./images/loading.gif');
-  background-size: 100px 100px;
-  background-repeat: no-repeat;
-  background-size: cover;
+img[lazy=loading] {
+    /*width: 100px;*/
+    background-position:center center!important;
+    background: url("./images/loading.gif");
+    background-size:100px 100px;
+    background-repeat:no-repeat;
+    background-size: cover;
 }
-img[lazy='error'] {
-  /*width: 100px;*/
-  background-position: center center !important;
-  background: url('./images/error.gif');
-  background-size: 100px 100px;
-  background-repeat: no-repeat;
-  background-size: cover;
+img[lazy=error] {
+    /*width: 100px;*/
+    background-position:center center!important;
+    background: url("./images/error.gif");
+    background-size:100px 100px;
+    background-repeat:no-repeat;
+    background-size: cover;
 }
+
 </style>

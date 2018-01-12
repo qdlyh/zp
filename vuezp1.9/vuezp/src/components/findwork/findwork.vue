@@ -41,17 +41,14 @@
           </div>
         </pull-to>
       </div>
-      <gotop></gotop>
     </div>
   </div>
 </template>
 <script>
-import gotop from "../../common/gotop";
 import PullTo from "vue-pull-to";
 export default {
   components: {
-    PullTo,
-    gotop
+    PullTo
   },
   data() {
     return {
@@ -130,7 +127,7 @@ export default {
           iteme:
           '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
-          jz: '全职'
+          jz: '广州市,市区：白云区,全职'
         },
         {
           src: require('../../images/logo.png'),
@@ -141,7 +138,7 @@ export default {
           iteme:
           '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
-          jz: '全职'
+          jz: '城市：广州市,市区：白云区,全职'
         },
         {
           src: require('../../images/logo.png'),
@@ -152,7 +149,7 @@ export default {
           iteme:
           '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
-          jz: '全职'
+          jz: '城市：广州市,市区：天河,全职'
         },
         {
           src: require('../../images/logo.png'),
@@ -163,7 +160,7 @@ export default {
           iteme:
           '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
-          jz: '兼职'
+          jz: '城市：佛山市,顺德区：天河,兼职'
         },
         {
           src: require('../../images/logo.png'),
@@ -174,7 +171,7 @@ export default {
           iteme:
           '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
-          jz: '兼职'
+          jz: '城市：佛山市,哈哈区：天河,兼职'
         },
       ],
       // list: [
@@ -236,17 +233,20 @@ export default {
     selection() {
       for (let i = 0; i < this.cityData.length; i++) {
         if (this.cityData[i].title == this.selected) {
-          //console.log(this.cityData[i].area[0].text)
+          console.log(this.cityData[i].area[0].text)
           this.myarea = this.cityData[i].area[0].text;
           return this.cityData[i].area;
         }
         this.$refs.myArea[0].selected = true;
+        // console.log(this.cityData[i].area[0].text)
+        // this.myarea = this.cityData[i].area[0].text;
       }
     },
     listData() {
       if (this.searchData[0].title == this.search) {
         return this.list;
       }
+      //console.log(this.selected)
       var search = this.search
       //console.log(search)
       var all = [];

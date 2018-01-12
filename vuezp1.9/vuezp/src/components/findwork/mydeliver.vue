@@ -23,16 +23,13 @@
         </div>
       </pull-to>
     </div>
-    <gotop></gotop>
   </div>
 </template>
 <script>
-import gotop from "../../common/gotop";
 import PullTo from "vue-pull-to";
 export default {
   components: {
-    PullTo,
-    gotop
+    PullTo
   },
   data() {
     return {
