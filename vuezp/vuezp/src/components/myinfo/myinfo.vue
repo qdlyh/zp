@@ -88,6 +88,7 @@ export default {
       popup: false,
       text: '',
       headerImage: require('../../images/logo.png'),
+      ifImage: false,
       picValue: '',
       cropper: '',
       croppable: false,
@@ -189,6 +190,7 @@ export default {
     },
     crop() {
       this.panel = false;
+      this.ifImage = true;  //判断图片是否为同一张
       var croppedCanvas;
       var roundedCanvas;
 
@@ -309,7 +311,9 @@ export default {
       if (have) {
         let formData = new FormData();
         formData.append('userId', 4);
-        formData.append('file', this.headerImage);
+        if (this.ifImage) {
+          formData.append('file', this.headerImage);
+        }
         formData.append('name', this.name);
         formData.append('sex', this.selectSex);
         formData.append('telephone', this.phone);
@@ -436,5 +440,3 @@ input::-webkit-inner-spin-button {
   }
 }
 </style>
-
-
