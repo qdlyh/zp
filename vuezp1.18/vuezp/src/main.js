@@ -7,7 +7,6 @@ import VueLazyload from 'vue-lazyload'
 import CropperCss from '../static/cropicrec.css'
 import axios from 'axios'
 Vue.prototype.$ajax = axios
-Vue.prototype.psta =  process.env.NODE_ENV=='production'? '':'/proxyapi';
 Vue.config.productionTip = false
 Vue.use(VueLazyload)
 Vue.use(VueLazyload, {

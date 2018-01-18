@@ -9,17 +9,17 @@
           </option>
         </select>
         <span>区:</span>
-        <select v-model="myArea">
+        <select ref="myArea" @change="area()">
           <option v-for="(data,index) in selection" :key="index">
             {{data.text}}
           </option>
         </select>
         <span>类型:</span>
-        <select v-model="search">
+        <select name="" v-model="search">
           <option value="" v-for="(item,index) in searchData" :key="index" :value="item.title">{{item.title}}</option>
         </select>
       </form>
-      <!-- <span>值：{{selected}}{{myArea}}{{search}}</span> -->
+      <!-- <span>值：{{selected}}{{myarea}}{{search}}</span> -->
       <div id="pullTo">
         <pull-to :top-load-method="refresh" :bottom-load-method="loadmore">
           <div class="work-list">
@@ -55,7 +55,7 @@ export default {
   },
   data() {
     return {
-      myArea:'',
+      myarea: '市区',
       search: '所有',
       searchData: [{ title: '所有' }, { title: '全职' }, { title: '兼职' }],
       selected: '城市',
@@ -128,7 +128,7 @@ export default {
           itemq: '助理会计',
           itemw: '3000-4500',
           iteme:
-            '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+          '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
           jz: '全职'
         },
@@ -139,7 +139,7 @@ export default {
           itemq: '助理会计',
           itemw: '3000-4500',
           iteme:
-            '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+          '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
           jz: '全职'
         },
@@ -150,7 +150,7 @@ export default {
           itemq: '助理会计',
           itemw: '3000-4500',
           iteme:
-            '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+          '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
           jz: '全职'
         },
@@ -161,7 +161,7 @@ export default {
           itemq: '助理会计',
           itemw: '3000-4500',
           iteme:
-            '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+          '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
           jz: '兼职'
         },
@@ -172,14 +172,53 @@ export default {
           itemq: '助理会计',
           itemw: '3000-4500',
           iteme:
-            '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+          '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
           itemr: '广东省广州市白云区鸣泉居',
           jz: '兼职'
         },
       ],
+      // list: [
+      //   {
+      //     src: require('../../images/logo.png'),
+      //     title: '嘻嘻哈哈有限公司兼职',
+      //     itemp: '合资|100-150|房地产',
+      //     itemq: '助理会计',
+      //     itemw: '3000-4500',
+      //     iteme:
+      //       '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+      //     itemr: '广东省广州市白云区鸣泉居',
+      //     address: [
+      //       {
+      //         jz: '城市：佛山市,顺德区：天河,全职'
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     src: require('../../images/logo.png'),
+      //     title: '嘻嘻哈哈有限公司全职',
+      //     itemp: '合资|100-150|房地产',
+      //     itemq: '助理会计',
+      //     itemw: '3000-4500',
+      //     iteme:
+      //       '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+      //     itemr: '广东省广州市白云区鸣泉居',
+      //     address: [
+      //       {
+      //         jz: '城市：佛山市,顺德区：天河,兼职'
+      //       }
+      //     ]
+      //   }
+      // ]
     }
   },
   methods: {
+    area() {
+      let obj = this.$refs.myArea; //定位id
+      let index = obj.selectedIndex; // 选中索引
+      let text = obj.options[index].text; // 选中文本
+      this.myarea = text;
+      //console.log(this.myarea)
+    },
     refresh(loaded) {
       setTimeout(() => {
         //this.dataList.reverse();
@@ -197,10 +236,11 @@ export default {
     selection() {
       for (let i = 0; i < this.cityData.length; i++) {
         if (this.cityData[i].title == this.selected) {
-          this.myArea = this.cityData[i].area[0].text;
+          //console.log(this.cityData[i].area[0].text)
+          this.myarea = this.cityData[i].area[0].text;
           return this.cityData[i].area;
         }
-        //this.myArea = this.cityData[i].area[0].text;
+        this.$refs.myArea[0].selected = true;
       }
     },
     listData() {

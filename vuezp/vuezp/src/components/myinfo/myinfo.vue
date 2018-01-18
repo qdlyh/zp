@@ -1,12 +1,13 @@
 <template>
   <div>
-    <div class="myinfo" v-for="(item,index) in list" :key="index">
+    <div class="myinfo">
       <form action="">
         <div class="top-img">
           <div class="head">
             <div id="cropic">
               <div class="container" v-show="panel">
                 <img id="image" :src="url" alt="Picture">
+                <button @click="panel = false" type="button" id="button" style="left: 10px;">取消</button>
                 <button type="button" id="button" @click="crop">确定</button>
               </div>
               <div>
@@ -21,42 +22,45 @@
         <div class="my-missage">
           <div>
             <span>姓名：</span>
-            <input type="text" maxlength="10" v-model.trim="item.name">
+            <input type="text" maxlength="10" v-model.trim="name">
           </div>
           <div>
             <span>性别：</span>
-            <select name="select">
-              <option value="" v-for="(item,index) in list[0].sexbox">{{item.sex}}</option>
+            <select v-model="selectSex">
+              <option v-for="(item,index) in list.sex" :value="item.id">{{item.title}}</option>
             </select>
           </div>
           <div>
             <span>联系：</span>
-            <input type="number" v-model="item.phone" oninput='if(value.length>11)value=value.slice(0,11)'>
+            <input type="number" v-model.trim="phone" oninput='if(value.length>11)value=value.slice(0,11)'>
           </div>
           <div>
             <span>工龄：</span>
-            <select name="select">
-              <option value="" v-for="(item,index) in list[0].work">{{item.time}}</option>
+            <select v-model="selectYears">
+              <option v-for="(item,index) in list.years" :value="item.id">{{item.title}}</option>
             </select>
           </div>
           <div>
             <span>职称：</span>
-            <input type="text" v-model.trim="item.position" maxlength="15">
+            <input type="text" v-model.trim="position" maxlength="15">
           </div>
           <div>
             <span>资格：</span>
-            <select name="select">
-              <option value="" v-for="(item,index) in list[0].prove">{{item.proveName}}</option>
+            <select v-model="selectQualification">
+              <option value="" v-for="(item,index) in list.qualification" :value="item.id">{{item.title}}</option>
             </select>
           </div>
           <div>
             <span class="sign">描述：</span>
             <span class="describe-box">
-              <textarea name="text" v-model="item.describe" cols="30" rows="10" maxlength="200"></textarea>
+              <textarea name="text" v-model.trim="describe" cols="30" rows="10" maxlength="200"></textarea>
               <i class="countText">{{countText}}/200</i>
             </span>
           </div>
-          <div class="btn-blue" @click="submit()">
+          <div class="btn-blue" @click="submit()" v-if="message==''">
+            <router-link to="">立即认证</router-link>
+          </div>
+          <div class="btn-blue" @click="mysubmit()" v-else>
             <router-link to="">保存</router-link>
           </div>
         </div>
@@ -74,6 +78,13 @@ export default {
   },
   data() {
     return {
+      name: '',
+      phone: '',
+      position: '',
+      describe: '',
+      selectSex: '',
+      selectYears: '',
+      selectQualification: '',
       popup: false,
       text: '',
       headerImage: require('../../images/logo.png'),
@@ -82,53 +93,8 @@ export default {
       croppable: false,
       panel: false,
       url: '',
-      list: [
-        {
-          name: 'lyh',
-          sexbox: [
-            {
-              sex: '男'
-            },
-            {
-              sex: '女'
-            },
-          ],
-          phone: '13030212212',
-          work: [
-            {
-              time: '一年以下'
-            },
-            {
-              time: '一年'
-            },
-            {
-              time: '两年'
-            },
-            {
-              time: '三年'
-            },
-            {
-              time: '三年以上'
-            },
-          ],
-          position: '搬砖工程师',
-          prove: [
-            {
-              proveName: '搬砖'
-            },
-            {
-              proveName: '搬砖工程师'
-            },
-            {
-              proveName: '包工头'
-            },
-            {
-              proveName: '开发商'
-            }
-          ],
-          describe: '留言留言噢噢噢噢噢噢噢噢哦哦哦哦哦哦哦哦哦'
-        }
-      ],
+      message: [],
+      list: [],
     }
   },
   mounted() {
@@ -144,6 +110,51 @@ export default {
         self.croppable = true;
       }
     });
+    /* 初次注册界面 */
+    this.$ajax({
+      method: 'get',
+      url: this.psta + '/base/pinfo',
+    })
+      .then(response => {
+        //console.log(response)
+        //console.log(this.list)
+        this.list = response.data.object;
+        if (this.message === '') {
+          this.selectSex = this.list.sex[0].id;
+          this.selectYears = this.list.years[0].id;
+          this.selectQualification = this.list.qualification[0].id;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        //alert('网络错误，不能访问');
+      });
+
+    /* 已注册用户信息 */
+    this.$ajax({
+      method: 'get',
+      url: this.psta + '/user/perinfo?userId=4',
+    })
+      .then(response => {
+        //console.log(response)
+        this.message = response.data.object;
+        //console.log(this.message)
+        this.selectSex = this.message.sex;
+        this.selectYears = this.message.workTime;
+        this.selectQualification = this.message.qualification;
+        this.headerImage = this.message.headimgurl;
+        this.name = this.message.name;
+        this.sex = this.message.sex;
+        this.phone = this.message.telephone;
+        this.selectYears = this.message.workTime;
+        this.position = this.message.title;
+        this.selectQualification = this.message.qualification;
+        this.describe = this.message.description;
+      })
+      .catch(error => {
+        console.log(error);
+        //alert('网络错误，不能访问');
+      });
   },
   methods: {
     getObjectURL(file) {
@@ -191,8 +202,7 @@ export default {
       roundedCanvas = this.getRoundedCanvas(croppedCanvas);
 
       this.headerImage = roundedCanvas.toDataURL();
-      this.postImg()
-
+      // this.dataURItoBlob(this.headerImage)  //base64转换成Blob 
     },
     getRoundedCanvas(sourceCanvas) {
 
@@ -220,52 +230,122 @@ export default {
 
       return canvas;
     },
-    postImg() {
-      // let params = new FormData();
-      // params.append('pic',123);
-      this.$ajax.post(this.psta + '/logopic', { pic: this.headerImage })
-        .then((res) => {
-
-        })
-        .catch((error) => {
-
-        })
-    },
+    /* base64转换成Blob */
+    // dataURItoBlob(dataURI) {
+    //   var byteString = atob(dataURI.split(',')[1]);
+    //   var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    //   var ab = new ArrayBuffer(byteString.length);
+    //   var ia = new Uint8Array(ab);
+    //   for (var i = 0; i < byteString.length; i++) {
+    //     ia[i] = byteString.charCodeAt(i);
+    //   }
+    //   console.log(new Blob([ab], { type: mimeString }))
+    //   return new Blob([ab], { type: mimeString });
+    // },
+    /* 认证按钮 */
     submit() {
       let have = true;
-      if (this.list[0].name.length == 0 || this.list[0].phone.length == 0 || this.list[0].position.length == 0) {
-        // console.log(this.list[0].name)
-        //alert('基本信息不能为空')
-        have = false;
-        this.popup = true;
-        this.text = '请填写完整的信息';
-        return false;
-      }
-      if (!(/^1[345789][0-9]{9}$/.test(this.list[0].phone))) {
-        //console.log('手机号错误');
-        have = false;
-        this.popup = true;
-        this.text = '手机号码错误';
-        return false;
-      }
+      // if (this.name.length == 0 || this.phone.length == 0 || this.position.length == 0 ||this.describe.length==0) {
+      //   // console.log(this.name)
+      //   //alert('基本信息不能为空')
+      //   have = false;
+      //   this.popup = true;
+      //   this.text = '请填写完整的信息';
+      //   return false;
+      // }
+      // if (!(/^1[345789][0-9]{9}$/.test(this.phone))) {
+      //   //console.log('手机号错误');
+      //   have = false;
+      //   this.popup = true;
+      //   this.text = '手机号码错误';
+      //   return false;
+      // }
       if (have) {
-        this.popup = true;
-        this.text = '保存成功';
+        let formData = new FormData();
+        formData.append('userId', 4);
+        formData.append('file', this.headerImage);
+        formData.append('name', this.name);
+        formData.append('sex', this.selectSex);
+        formData.append('telephone', this.phone);
+        formData.append('workTime', this.selectYears);
+        formData.append('title', this.position);
+        formData.append('qualification', this.selectQualification);
+        formData.append('description', this.describe);
+        this.$ajax({
+          method: 'post',
+          // url: this.psta + '/user/pregister',
+          data: formData
+        })
+          .then(response => {
+            //console.log(response)
+            this.popup = true;
+            this.text = '认证成功';
+          })
+          .catch(error => {
+            console.log(error);
+            //alert('网络错误，不能访问');
+          })
+      }
+    },
+
+    /* 保存按钮 */
+    mysubmit() {
+      let have = true;
+      // if (this.name.length == 0 || this.phone.length == 0 || this.position.length == 0 ||this.describe.length==0) {
+      //   // console.log(this.name)
+      //   //alert('基本信息不能为空')
+      //   have = false;
+      //   this.popup = true;
+      //   this.text = '请填写完整的信息';
+      //   return false;
+      // }
+      // if (!(/^1[345789][0-9]{9}$/.test(this.phone))) {
+      //   //console.log('手机号错误');
+      //   have = false;
+      //   this.popup = true;
+      //   this.text = '手机号码错误';
+      //   return false;
+      // }
+      if (have) {
+        let formData = new FormData();
+        formData.append('userId', 4);
+        formData.append('file', this.headerImage);
+        formData.append('name', this.name);
+        formData.append('sex', this.selectSex);
+        formData.append('telephone', this.phone);
+        formData.append('workTime', this.selectYears);
+        formData.append('title', this.position);
+        formData.append('qualification', this.selectQualification);
+        formData.append('description', this.describe);
+        this.$ajax({
+          method: 'post',
+          url: this.psta + '/user/pperfect',
+          data: formData
+        })
+          .then(response => {
+            //console.log(response);
+            this.popup = true;
+            this.text = '保存成功';
+          })
+          .catch(error => {
+            console.log(error);
+            //alert('网络错误，不能访问');
+          })
       }
     },
   },
   computed: {
     countText() {
-      if (this.list[0].describe.length != 0) {
-        return this.list[0].describe.length;
+      if (this.describe.length != 0) {
+        return this.describe.length;
       }
       return 0;
     }
   },
   watch: {
-    list: {
+    message: {
       handler(data) {
-        //console.log(data);
+        console.log(data);
       },
       deep: true
     },
