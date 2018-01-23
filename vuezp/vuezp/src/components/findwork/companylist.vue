@@ -48,7 +48,7 @@
                         <span>岗位薪资：</span>
                         <p>{{item.xz}}</p>
                     </div>
-                    <div class="sign-div">
+                    <div class="sign-div" style="margin-bottom:30px;">
                         <span class="sign-span">岗位描述：</span>
                         <p class="sign-p">{{item.gwms}}</p>
                     </div>
@@ -149,11 +149,7 @@ $text: #535353;
   }
 }
 .btn-sign {
-  margin: 60px 0;
   border: none !important;
-  a {
-    margin: 30px 0;
-  }
 }
 </style>
 
