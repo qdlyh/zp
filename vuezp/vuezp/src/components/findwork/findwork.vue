@@ -1,5 +1,29 @@
 <template>
   <div>
+    <!-- <div>
+      <select v-model="qualification">
+        <option v-for="(item,index) in data.qualification" :value="item.id">{{item.title}}</option>
+      </select>
+      <select v-model="number">
+        <option v-for="(item,index) in data.number" :value="item.id">{{item.title}}</option>
+      </select>
+      <select v-model="address">
+        <option v-for="(item,index) in data.address" :value="item.id">{{item.title}}</option>
+      </select>
+      <select v-model="typess">
+        <option v-for="(item,index) in data.typess" :value="item.id">{{item.title}}</option>
+      </select>
+      <select v-model="jobs">
+        <option v-for="(item,index) in data.jobs" :value="item.id">{{item.title}}</option>
+      </select>
+      <select v-model="salary">
+        <option v-for="(item,index) in data.salary" :value="item.id">{{item.title}}</option>
+      </select>
+      <select v-model="years">
+        <option v-for="(item,index) in data.years" :value="item.id">{{item.title}}</option>
+      </select>
+    </div> 
+    <p>{{qualification}}</p><br/>-->
     <div class="findwork">
       <form action="" id="form">
         <span>市:</span>
@@ -55,7 +79,15 @@ export default {
   },
   data() {
     return {
-      myArea:'',
+      qualification: '',
+      number: '',
+      address: '',
+      typess: '',
+      jobs: '',
+      salary: '',
+      years: '',
+
+      myArea: '',
       search: '所有',
       searchData: [{ title: '所有' }, { title: '全职' }, { title: '兼职' }],
       selected: '城市',
@@ -120,6 +152,8 @@ export default {
           ]
         }
       ],
+      data: [],
+      list: [],
       list: [
         {
           src: require('../../images/logo.png'),
@@ -179,6 +213,35 @@ export default {
       ],
     }
   },
+  mounted() {
+    // this.$ajax({
+    //   method: 'get',
+    //   url: this.psta + '/base/cinfo',
+    // })
+    //   .then(response => {
+    //     //console.log(response)
+    //     this.data = response.data.object;
+    //     //console.log(this.data)
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     //alert('网络错误，不能访问');
+    //   });
+
+    // this.$ajax({
+    //   method: 'get',
+    //   url: this.psta + '/item/list?pageNow=1&pageSize=5&companyId=',
+    // })
+    //   .then(response => {
+    //     //console.log(response)
+    //     //console.log(this.list)
+    //     this.list = response.data.object;
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     //alert('网络错误，不能访问');
+    //   });
+  },
   methods: {
     refresh(loaded) {
       setTimeout(() => {
@@ -204,11 +267,13 @@ export default {
       }
     },
     listData() {
-      if (this.searchData[0].title == this.search) {
-        return this.list;
-      }
       var search = this.search
       //console.log(search)
+
+      if (search == this.searchData[0].title && this.selected == this.cityData[0].title) {
+        console.log(search, this.cityData[0].title)
+        return this.list;
+      }
       var all = [];
       if (search) {
         for (var i = 0; i < this.list.length; i++) {
