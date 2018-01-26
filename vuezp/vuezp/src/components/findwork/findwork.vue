@@ -1,41 +1,17 @@
 <template>
   <div>
-    <!-- <div>
-      <select v-model="qualification">
-        <option v-for="(item,index) in data.qualification" :value="item.id">{{item.title}}</option>
-      </select>
-      <select v-model="number">
-        <option v-for="(item,index) in data.number" :value="item.id">{{item.title}}</option>
-      </select>
-      <select v-model="address">
-        <option v-for="(item,index) in data.address" :value="item.id">{{item.title}}</option>
-      </select>
-      <select v-model="typess">
-        <option v-for="(item,index) in data.typess" :value="item.id">{{item.title}}</option>
-      </select>
-      <select v-model="jobs">
-        <option v-for="(item,index) in data.jobs" :value="item.id">{{item.title}}</option>
-      </select>
-      <select v-model="salary">
-        <option v-for="(item,index) in data.salary" :value="item.id">{{item.title}}</option>
-      </select>
-      <select v-model="years">
-        <option v-for="(item,index) in data.years" :value="item.id">{{item.title}}</option>
-      </select>
-    </div> 
-    <p>{{qualification}}</p><br/>-->
     <div class="findwork">
       <form action="" id="form">
         <span>市:</span>
         <select v-model="selected">
-          <option v-for="(data,index) in cityData" :key="index">
+          <option v-for="(data,index) in cityData" :value="data.id" :key="index">
             {{data.title}}
           </option>
         </select>
         <span>区:</span>
         <select v-model="myArea">
-          <option v-for="(data,index) in selection" :key="index">
-            {{data.text}}
+          <option v-for="(data,index) in selection" :value="data.id" :key="index">
+            {{data.title}}
           </option>
         </select>
         <span>类型:</span>
@@ -44,21 +20,27 @@
         </select>
       </form>
       <!-- <span>值：{{selected}}{{myArea}}{{search}}</span> -->
+      <div class="ifshow" v-if="ifshow">
+        <p>抱歉！该地区没有找到您需要的职位</p>
+      </div>
+      <div class="ifshow" v-if="elshow">
+        <p>抱歉！该地区没有找到您需要的职位</p>
+      </div>
       <div id="pullTo">
         <pull-to :top-load-method="refresh" :bottom-load-method="loadmore">
           <div class="work-list">
             <div class="list-box" v-for="(item,index) in listData" :key="index">
               <router-link to="/mydeliver">
                 <span class="left">
-                  <img v-lazy="item.src" alt="">
+                  <img v-lazy="item.headimgurl" alt="">
                 </span>
                 <span class="right">
-                  <h3>{{item.title}}</h3>
-                  <p class="sign-p">{{item.itemp}}</p>
-                  <i>{{item.itemq}}&nbsp;&nbsp;&nbsp;月薪：{{item.itemw}}元</i>
-                  <p class="describe">{{item.iteme}}</p>
-                  <p>{{item.itemr}}</p>
-                  <p style="display: none;">{{item.jz}}</p>
+                  <h3>{{item.name}}</h3>
+                  <p class="sign-p">{{item.natureTitle}}&nbsp;|&nbsp;{{item.sizeTitle}}&nbsp;|&nbsp;{{item.scope}}</p>
+                  <i>{{item.jobsTitle}}&nbsp;&nbsp;&nbsp;月薪：{{item.salaryTitle}}元</i>
+                  <p class="describe">{{item.cdescription}}</p>
+                  <p>{{item.address}}</p>
+                  <p>{{item.typessTitle}}</p>
                 </span>
               </router-link>
             </div>
@@ -79,6 +61,8 @@ export default {
   },
   data() {
     return {
+      ifshow: false,
+      elshow: false,
       qualification: '',
       number: '',
       address: '',
@@ -86,172 +70,173 @@ export default {
       jobs: '',
       salary: '',
       years: '',
-
-      myArea: '',
+      pageNow: 1,
       search: '所有',
       searchData: [{ title: '所有' }, { title: '全职' }, { title: '兼职' }],
-      selected: '城市',
+      selected: '',
+      myArea: '',
       cityData: [
-        {
-          title: '城市',
-          area: [
-            {
-              text: '市区'
-            },
-          ]
-        },
-        {
-          title: '广州市',
-          area: [
-            {
-              text: '市区0'
-            },
-            {
-              text: '天河区'
-            },
-            {
-              text: '白云区'
-            },
-            {
-              text: '海珠区'
-            }
-          ]
-        },
-        {
-          title: '广州市1',
-          area: [
-            {
-              text: '市区1'
-            },
-            {
-              text: '天河区1'
-            },
-            {
-              text: '白云区1'
-            },
-            {
-              text: '海珠区1'
-            }
-          ]
-        },
-        {
-          title: '广州市2',
-          area: [
-            {
-              text: '市区2'
-            },
-            {
-              text: '天河区2'
-            },
-            {
-              text: '白云区2'
-            },
-            {
-              text: '海珠区2'
-            }
-          ]
-        }
+        //   {
+        //     title: '城市',
+        //     area: [
+        //       {
+        //         text: '市区'
+        //       },
+        //     ]
+        //   },
+        //   {
+        //     title: '广州市',
+        //     area: [
+        //       {
+        //         text: '市区0'
+        //       },
+        //       {
+        //         text: '天河区'
+        //       },
+        //       {
+        //         text: '白云区'
+        //       },
+        //       {
+        //         text: '海珠区'
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     title: '广州市1',
+        //     area: [
+        //       {
+        //         text: '市区1'
+        //       },
+        //       {
+        //         text: '天河区1'
+        //       },
+        //       {
+        //         text: '白云区1'
+        //       },
+        //       {
+        //         text: '海珠区1'
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     title: '广州市2',
+        //     area: [
+        //       {
+        //         text: '市区2'
+        //       },
+        //       {
+        //         text: '天河区2'
+        //       },
+        //       {
+        //         text: '白云区2'
+        //       },
+        //       {
+        //         text: '海珠区2'
+        //       }
+        //     ]
+        //   }
       ],
-      data: [],
-      list: [],
       list: [
-        {
-          src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司',
-          itemp: '合资|100-150|房地产',
-          itemq: '助理会计',
-          itemw: '3000-4500',
-          iteme:
-            '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
-          itemr: '广东省广州市白云区鸣泉居',
-          jz: '全职'
-        },
-        {
-          src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司1',
-          itemp: '合资|100-150|房地产',
-          itemq: '助理会计',
-          itemw: '3000-4500',
-          iteme:
-            '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
-          itemr: '广东省广州市白云区鸣泉居',
-          jz: '全职'
-        },
-        {
-          src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司2',
-          itemp: '合资|100-150|房地产',
-          itemq: '助理会计',
-          itemw: '3000-4500',
-          iteme:
-            '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
-          itemr: '广东省广州市白云区鸣泉居',
-          jz: '全职'
-        },
-        {
-          src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司全职a',
-          itemp: '合资|100-150|房地产',
-          itemq: '助理会计',
-          itemw: '3000-4500',
-          iteme:
-            '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
-          itemr: '广东省广州市白云区鸣泉居',
-          jz: '兼职'
-        },
-        {
-          src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司b',
-          itemp: '合资|100-150|房地产',
-          itemq: '助理会计',
-          itemw: '3000-4500',
-          iteme:
-            '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
-          itemr: '广东省广州市白云区鸣泉居',
-          jz: '兼职'
-        },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   iteme:
+        //     '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居',
+        //   jz: '全职'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司1',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   iteme:
+        //     '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居',
+        //   jz: '全职'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司2',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   iteme:
+        //     '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居',
+        //   jz: '全职'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司全职a',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   iteme:
+        //     '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居',
+        //   jz: '兼职'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司b',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   iteme:
+        //     '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居',
+        //   jz: '兼职'
+        // },
       ],
     }
   },
   mounted() {
-    // this.$ajax({
-    //   method: 'get',
-    //   url: this.psta + '/base/cinfo',
-    // })
-    //   .then(response => {
-    //     //console.log(response)
-    //     this.data = response.data.object;
-    //     //console.log(this.data)
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     //alert('网络错误，不能访问');
-    //   });
-
-    // this.$ajax({
-    //   method: 'get',
-    //   url: this.psta + '/item/list?pageNow=1&pageSize=5&companyId=',
-    // })
-    //   .then(response => {
-    //     //console.log(response)
-    //     //console.log(this.list)
-    //     this.list = response.data.object;
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     //alert('网络错误，不能访问');
-    //   });
+    this.$ajax({
+      method: 'get',
+      url: this.psta + '/base/itemInfo',
+    })
+      .then(response => {
+        //console.log(response)
+        this.cityData = response.data.object.address[0].menus;
+        this.selected = this.cityData[0].id
+        // console.log(this.cityData[0].id)
+      })
+      .catch(error => {
+        console.log(error);
+        //alert('网络错误，不能访问');
+      });
   },
   methods: {
     refresh(loaded) {
       setTimeout(() => {
-        //this.dataList.reverse();
+        this.loadmore(loaded);
         loaded('done');
       }, 2000);
     },
     loadmore(loaded) {
       setTimeout(() => {
-        //this.dataList = this.dataList.concat(this.dataList);
+        this.$ajax({
+          method: 'get',
+          url: this.psta + '/item/list' + '?city=' + this.selected + '&area=' + this.myArea + '&pageNow=' + ++this.pageNow + '&pageSize=' + 2,
+        })
+          .then(response => {
+            //console.log(response)
+            let listPage = response.data.object.list;
+
+            for (let i = 0; i < listPage.length; i++) {
+              this.list.push(listPage[i])
+            }
+
+          })
+          .catch(error => {
+            console.log(error);
+            //alert('网络错误，不能访问');
+          });
         loaded('done');
       }, 2000);
     },
@@ -259,29 +244,39 @@ export default {
   computed: {
     selection() {
       for (let i = 0; i < this.cityData.length; i++) {
-        if (this.cityData[i].title == this.selected) {
-          this.myArea = this.cityData[i].area[0].text;
-          return this.cityData[i].area;
+        //console.log(this.cityData[i].title, this.cityData[i].menus[0].title)
+        if (this.cityData[i].id === this.selected) {
+          this.myArea = this.cityData[i].menus[0].id
+          return this.cityData[i].menus;
         }
-        //this.myArea = this.cityData[i].area[0].text;
       }
     },
     listData() {
       var search = this.search
       //console.log(search)
-
-      if (search == this.searchData[0].title && this.selected == this.cityData[0].title) {
-        console.log(search, this.cityData[0].title)
+      if (search == this.searchData[0].title) {
+        this.elshow = false;
         return this.list;
       }
+      // if (search == this.searchData[0].title && this.selected == this.cityData[0].title) {
+      //  // console.log(search, this.cityData[0].title)
+      //   return this.list;
+      // }
       var all = [];
       if (search) {
         for (var i = 0; i < this.list.length; i++) {
-          if (this.list[i].jz.toLowerCase().indexOf(search) != -1) {
+          if (this.list[i].typessTitle.toLowerCase().indexOf(search) != -1) {
             //console.log(this.list[i])
             all.push(this.list[i]);
           }
         }
+
+        if (all == '') {
+          this.elshow = true;
+        } else {
+          this.elshow = false;
+        }
+
         return all;
       }
       return this.list;
@@ -290,13 +285,46 @@ export default {
     //   var search = this.search
     //   if (search) {
     //     return this.list.filter(function(product) {
-    //       console.log(product.jz)
-    //       return product.jz.toLowerCase().indexOf(search) > -1
+    //       console.log(product.typessTitle)
+    //       return product.typessTitle.toLowerCase().indexOf(search) > -1
     //     })
     //   }
     //   return this.list
     // }
+  },
+  watch: {
+    myArea: {
+      handler(data) {
+        //console.log(data)
+        this.$ajax({
+          method: 'get',
+          url: this.psta + '/item/list' + '?city=' + this.selected + '&area=' + this.myArea,
+        })
+          .then(response => {
+            //console.log(response)
+            this.list = response.data.object.list;
+            //console.log(this.list)
+          })
+          .catch(error => {
+            console.log(error);
+            //alert('网络错误，不能访问');
+          });
+      },
+      deep: true
+    },
+    list: {
+      handler(data) {
+        if (this.list.length == 0) {
+          this.ifshow = true;
+          console.log(this.ifshow)
+        } else {
+          this.ifshow = false;
+        }
+      },
+      deep: true
+    }
   }
+
 }
 </script>
 <style lang="scss" scoped>
@@ -325,6 +353,17 @@ $text: #535353;
       height: 30px;
       border: none;
       border: 0.5px solid #ccc;
+    }
+  }
+  .ifshow {
+    width: 100%;
+    height: 100vh;
+    background: #fff;
+    p {
+      text-align: center;
+      padding-top: 50%;
+      font-size: 16px;
+      color: $text;
     }
   }
   .work-list {
