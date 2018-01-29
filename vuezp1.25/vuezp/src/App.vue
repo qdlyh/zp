@@ -35,14 +35,13 @@ i {
 
 /* 按钮 */
 .btn-blue {
-  width: 60%;
+  margin: 30px 0;
   text-align: center;
-  margin: 30px auto;
   a {
     display: inline-block;
     line-height: 45px;
-    width: 100%;
     height: 45px;
+    width: 60%;
     background: #3873cd;
     border-radius: 10px;
     font-size: 18px;
@@ -50,26 +49,27 @@ i {
     text-overflow: ellipsis;
     border: none;
     outline: none;
+    margin: 0 auto;
     &:active {
       background: rgb(47, 115, 218);
     }
   }
 }
 
-// .action-block {
-//   position: relative;
-//   &:before {
-//     content: ' ';
-//     position: absolute;
-//     width: 15px;
-//     height: 15px;
-//     background: url(./images/loadings.gif);
-//     background-size: 15px 15px;
-//     z-index: 9999;
-//     left: 35%;
-//     top: 35%;
-//   }
-// }
+.action-block {
+  position: relative;
+  &:before {
+    content:" ";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: url(./images/loadings.gif);
+    background-size:15px 15px;
+    z-index: 9999;
+    left: 35%;
+    top: 35%;
+  }
+}
 
 /* 懒加载图片过渡效果 */
 img[lazy='loaded'] {
@@ -95,7 +95,7 @@ img[lazy='loading'] {
 img[lazy='error'] {
   /*width: 100px;*/
   background-position: center center !important;
-  background: url('./images/error.jpg');
+  background: url('./images/error.gif');
   background-size: 100px 100px;
   background-repeat: no-repeat;
   background-size: cover;

@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- <h2>{{$route.query.personalId}}</h2> -->
-        <!-- <h2>{{ $route.params.id }}</h2> -->
+        <h2>{{ $route.params.id }}</h2>
         <div class="myinfo" v-for="(item,index) in list" :key="index">
             <form action="">
                 <div class="top-img">
@@ -50,37 +50,28 @@
                         <span>岗位薪资：</span>
                         <p>{{item.salaryTitle}}</p>
                     </div>
-                    <div class="sign-div" style="margin-bottom:30px;">
+                    <div class="sign-div">
                         <span class="sign-span">岗位描述：</span>
                         <p class="sign-p">{{item.idescription}}</p>
                     </div>
-                    <div class="btn-blue btn-sign" @click="submit()">
-                        <router-link to="">发送简历</router-link>
-                    </div>
+                    <!-- <div class="btn-blue btn-sign">
+                        <router-link to="/findwork">发送简历</router-link>
+                    </div> -->
                 </div>
             </form>
         </div>
-        <Dialog :popup="popup" :text="text"></Dialog>
     </div>
 </template>
 <script>
-import Dialog from "../../common/Dialog";
 export default {
-    components: {
-        Dialog
-    },
     data() {
         return {
             itemId: '',
-            personalId: '',
-            text: '',
-            popup: false,
             list: []
         }
     },
     mounted() {
-        this.itemId = this.$route.params.id                //列表路径id
-        this.personalId = this.$route.query.personalId     //url参数
+        this.itemId = this.$route.params.id
         this.$ajax({
             method: 'get',
             url: this.psta + '/item/detail?itemId=' + this.itemId,
@@ -96,40 +87,6 @@ export default {
             });
     },
     methods: {
-        submit() {
-            let formData = new FormData();
-            formData.append('itemId', this.itemId);
-            formData.append('personalId', this.personalId)
-            formData.append('companyId', this.list[0].companyId)
-            this.$ajax({
-                method: 'post',
-                url: this.psta + '/item/giveResume',
-                data: formData
-
-            })
-                .then(response => {
-                    //console.log(response)
-                    this.popup = true;
-                    this.text = '简历已发送'
-                })
-                .catch(error => {
-                    console.log(error);
-                    //alert('网络错误，不能访问');
-                });
-        }
-    },
-    watch: {
-        popup: {
-            handler(obj) {
-                //console.log(obj);
-                if (this.popup) {
-                    setTimeout(() => {
-                        this.popup = false;
-                    }, 1500)
-                }
-            },
-            deep: true
-        },
     }
 }
 </script>

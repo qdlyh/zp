@@ -88,7 +88,7 @@ export default {
       popup: false,
       text: '',
       headerImage: require('../../images/logo.png'),
-      ifImage: false, //判断图片是否为同一张
+      ifImage: false,
       picValue: '',
       cropper: '',
       croppable: false,
@@ -141,11 +141,13 @@ export default {
         this.message = response.data.object;
         //console.log(this.message)
         this.selectSex = this.message.sex;
+        this.selectYears = this.message.workTime;
+        this.selectQualification = this.message.qualification;
         this.headerImage = this.message.headimgurl;
         this.name = this.message.name;
         this.sex = this.message.sex;
         this.phone = this.message.telephone;
-        this.selectYears = this.message.years;
+        this.selectYears = this.message.workTime;
         this.position = this.message.title;
         this.selectQualification = this.message.qualification;
         this.describe = this.message.description;
@@ -188,7 +190,7 @@ export default {
     },
     crop() {
       this.panel = false;
-      this.ifImage = true;
+      this.ifImage = true;  //判断图片是否为同一张
       var croppedCanvas;
       var roundedCanvas;
 
@@ -291,21 +293,21 @@ export default {
     /* 保存按钮 */
     mysubmit() {
       let have = true;
-      if (this.name.length == 0 || this.phone.length == 0 || this.position.length == 0 || this.describe.length == 0) {
-        // console.log(this.name)
-        //alert('基本信息不能为空')
-        have = false;
-        this.popup = true;
-        this.text = '请填写完整的信息';
-        return false;
-      }
-      if (!(/^1[3-9][0-9]{9}$/.test(this.phone))) {
-        //console.log('手机号错误');
-        have = false;
-        this.popup = true;
-        this.text = '手机号码错误';
-        return false;
-      }
+      // if (this.name.length == 0 || this.phone.length == 0 || this.position.length == 0 ||this.describe.length==0) {
+      //   // console.log(this.name)
+      //   //alert('基本信息不能为空')
+      //   have = false;
+      //   this.popup = true;
+      //   this.text = '请填写完整的信息';
+      //   return false;
+      // }
+      // if (!(/^1[345789][0-9]{9}$/.test(this.phone))) {
+      //   //console.log('手机号错误');
+      //   have = false;
+      //   this.popup = true;
+      //   this.text = '手机号码错误';
+      //   return false;
+      // }
       if (have) {
         let formData = new FormData();
         formData.append('userId', 4);
@@ -345,9 +347,9 @@ export default {
     }
   },
   watch: {
-    name: {
+    message: {
       handler(data) {
-        //console.log(data);
+        console.log(data);
       },
       deep: true
     },
@@ -438,4 +440,3 @@ input::-webkit-inner-spin-button {
   }
 }
 </style>
-

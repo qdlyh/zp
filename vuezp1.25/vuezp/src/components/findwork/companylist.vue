@@ -1,135 +1,87 @@
 <template>
     <div>
-        <!-- <h2>{{$route.query.personalId}}</h2> -->
-        <!-- <h2>{{ $route.params.id }}</h2> -->
         <div class="myinfo" v-for="(item,index) in list" :key="index">
             <form action="">
                 <div class="top-img">
-                    <img v-lazy="item.headimgurl">
+                    <img v-lazy="item.src">
                 </div>
                 <div class="my-missage">
                     <div>
                         <span>企业名称：</span>
-                        <p>{{item.name}}</p>
+                        <p>{{item.title}}</p>
                     </div>
                     <div>
                         <span>企业性质：</span>
-                        <p>{{item.natureTitle}}</p>
+                        <p>{{item.hz}}</p>
                     </div>
                     <div>
                         <span>经营范围：</span>
-                        <p>{{item.sizeTitle}}</p>
+                        <p>{{item.jy}}</p>
                     </div>
                     <div>
                         <span>联系人
                             <i class="sign-i">：</i>
                         </span>
-                        <p>{{item.linkman}}</p>
+                        <p>{{item.lxr}}</p>
                     </div>
                     <div>
                         <span>联系电话：</span>
-                        <p>{{item.linkNumber}}</p>
+                        <p>{{item.phone}}</p>
                     </div>
                     <div>
                         <span>企业地址：</span>
-                        <p>{{item.address}}</p>
+                        <p>{{item.dz}}</p>
                     </div>
                     <div class="sign-div">
                         <span class="sign-span">企业描述：</span>
-                        <p class="sign-p">{{item.cdescription}}</p>
+                        <p class="sign-p">{{item.ms}}</p>
                     </div>
                     <div>
                         <span>招聘岗位：</span>
-                        <p>{{item.jobsTitle}}</p>
+                        <p>{{item.zp}}</p>
                     </div>
                     <div>
                         <span>工作年限：</span>
-                        <p>{{item.yearsTitle}}</p>
+                        <p>{{item.gz}}</p>
                     </div>
                     <div>
                         <span>岗位薪资：</span>
-                        <p>{{item.salaryTitle}}</p>
+                        <p>{{item.xz}}</p>
                     </div>
                     <div class="sign-div" style="margin-bottom:30px;">
                         <span class="sign-span">岗位描述：</span>
-                        <p class="sign-p">{{item.idescription}}</p>
+                        <p class="sign-p">{{item.gwms}}</p>
                     </div>
-                    <div class="btn-blue btn-sign" @click="submit()">
-                        <router-link to="">发送简历</router-link>
+                    <div class="btn-blue btn-sign">
+                        <router-link to="/findwork">发送简历</router-link>
                     </div>
                 </div>
             </form>
         </div>
-        <Dialog :popup="popup" :text="text"></Dialog>
     </div>
 </template>
 <script>
-import Dialog from "../../common/Dialog";
 export default {
-    components: {
-        Dialog
-    },
     data() {
         return {
-            itemId: '',
-            personalId: '',
-            text: '',
-            popup: false,
-            list: []
-        }
-    },
-    mounted() {
-        this.itemId = this.$route.params.id                //列表路径id
-        this.personalId = this.$route.query.personalId     //url参数
-        this.$ajax({
-            method: 'get',
-            url: this.psta + '/item/detail?itemId=' + this.itemId,
-        })
-            .then(response => {
-                //console.log(response)
-                this.list = response.data.object;
-                //console.log(this.list)
-            })
-            .catch(error => {
-                console.log(error);
-                //alert('网络错误，不能访问');
-            });
-    },
-    methods: {
-        submit() {
-            let formData = new FormData();
-            formData.append('itemId', this.itemId);
-            formData.append('personalId', this.personalId)
-            formData.append('companyId', this.list[0].companyId)
-            this.$ajax({
-                method: 'post',
-                url: this.psta + '/item/giveResume',
-                data: formData
-
-            })
-                .then(response => {
-                    //console.log(response)
-                    this.popup = true;
-                    this.text = '简历已发送'
-                })
-                .catch(error => {
-                    console.log(error);
-                    //alert('网络错误，不能访问');
-                });
-        }
-    },
-    watch: {
-        popup: {
-            handler(obj) {
-                //console.log(obj);
-                if (this.popup) {
-                    setTimeout(() => {
-                        this.popup = false;
-                    }, 1500)
+            list: [
+                {
+                    src: require('../../images/logo.png'),
+                    title: '嘻嘻哈哈有限公司',
+                    hz: '合资',
+                    gm: '100-15/人',
+                    jy: '房地产',
+                    lxr: '李佳刚',
+                    phone: '13030217212',
+                    dz: '广东省广州市白云区',
+                    ms: '要负责公司账单要负责公司账单要负责公司账单要负责公司账单要负责公司账单主要负责公司账单',
+                    zp: '高级搬砖工程师',
+                    gz: '3年以上',
+                    xz: '5000/7000/月',
+                    gwms: '要负责公司账单要负责公司账单要负责公司账单要负责公司账单要负责公司账单主要负责公司账单'
                 }
-            },
-            deep: true
-        },
+            ]
+        }
     }
 }
 </script>

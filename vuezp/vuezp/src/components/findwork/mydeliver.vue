@@ -5,17 +5,18 @@
         <div class="findwork">
           <div class="work-list">
             <div class="list-box" v-for="(item,index) in list" :key="index">
-              <router-link to="/companylist">
+              <router-link :to="{ name: 'deliverlist', params: { id: item.itemId }}">
                 <span class="left">
-                  <img v-lazy="item.src" alt="">
+                  <img v-lazy="item.headimgurl" alt="">
                 </span>
                 <span class="right">
-                  <h3>{{item.title}}</h3>
-                  <p class="sign-p">{{item.itemp}}</p>
-                  <i>{{item.itemq}}&nbsp;&nbsp;&nbsp;月薪：{{item.itemw}}元</i>
-                  <p class="describe">{{item.iteme}}</p>
-                  <p>{{item.itemr}}</p>
-                  <p class="time">投递时间：{{item.time}}</p>
+                  <h3>{{item.name}}</h3>
+                  <p class="sign-p">{{item.natureTitle}}&nbsp;|&nbsp;{{item.sizeTitle}}&nbsp;|&nbsp;{{item.scope}}</p>
+                  <i>{{item.jobsTitle}}&nbsp;&nbsp;&nbsp;月薪：{{item.salaryTitle}}元</i>
+                  <p class="describe">{{item.cdescription}}</p>
+                  <p>{{item.address}}</p>
+                  <p>{{item.typessTitle}}</p>
+                  <p class="time">投递时间：{{item.createdDate}}</p>
                 </span>
               </router-link>
             </div>
@@ -37,63 +38,100 @@ export default {
   data() {
     return {
       list: [
-        {
-          src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司',
-          itemp: '合资|100-150|房地产',
-          itemq: '助理会计',
-          itemw: '3000-4500',
-          time: '2017-11-11',
-          iteme:
-          '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
-          itemr: '广东省广州市白云区鸣泉居'
-        },
-        {
-          src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司',
-          itemp: '合资|100-150|房地产',
-          itemq: '助理会计',
-          itemw: '3000-4500',
-          time: '2017-11-11',
-          iteme:
-          '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
-          itemr: '广东省广州市白云区鸣泉居'
-        },
-        {
-          src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司',
-          itemp: '合资|100-150|房地产',
-          itemq: '助理会计',
-          itemw: '3000-4500',
-          time: '2017-11-11',
-          iteme:
-          '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
-          itemr: '广东省广州市白云区鸣泉居'
-        },
-        {
-          src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司',
-          itemp: '合资|100-150|房地产',
-          itemq: '助理会计',
-          itemw: '3000-4500',
-          time: '2017-11-11',
-          iteme:
-          '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
-          itemr: '广东省广州市白云区鸣泉居'
-        },
-        {
-          src: require('../../images/logo.png'),
-          title: '嘻嘻哈哈有限公司',
-          itemp: '合资|100-150|房地产',
-          itemq: '助理会计',
-          itemw: '3000-4500',
-          time: '2017-11-11',
-          iteme:
-          '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
-          itemr: '广东省广州市白云区鸣泉居'
-        }
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   time: '2017-11-11',
+        //   iteme:
+        //     '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   time: '2017-11-11',
+        //   iteme:
+        //     '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   time: '2017-11-11',
+        //   iteme:
+        //     '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   time: '2017-11-11',
+        //   iteme:
+        //     '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   time: '2017-11-11',
+        //   iteme:
+        //     '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   time: '2017-11-11',
+        //   iteme:
+        //     '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   time: '2017-11-11',
+        //   iteme:
+        //     '主要负责公司账单主要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居'
+        // }
       ]
     }
+  },
+  mounted() {
+    this.$ajax({
+      method: 'get',
+      url: this.psta + '/item/myGive?personalId=1',
+    })
+      .then(response => {
+        //console.log(response)
+        this.list = response.data.object;
+        console.log(this.list)
+      })
+      .catch(error => {
+        console.log(error);
+        //alert('网络错误，不能访问');
+      });
   },
   methods: {
     refresh(loaded) {

@@ -16,19 +16,21 @@
         </select>
         <span>类型:</span>
         <select v-model="search">
-          <option value="" v-for="(item,index) in searchData" :key="index" :value="item.id">{{item.title}}</option>
+          <option value="" v-for="(item,index) in searchData" :key="index" :value="item.title">{{item.title}}</option>
         </select>
       </form>
       <!-- <span>值：{{selected}}{{myArea}}{{search}}</span> -->
-      <div class="ifshow" v-if="ifshow==true||elshow==true">
+      <div class="ifshow" v-if="ifshow">
         <p>抱歉！该地区没有找到您需要的职位</p>
       </div>
-      <div id="pullTo" v-else>
+      <div class="ifshow" v-if="elshow">
+        <p>抱歉！该地区没有找到您需要的职位</p>
+      </div>
+      <div id="pullTo">
         <pull-to :top-load-method="refresh" :bottom-load-method="loadmore">
-          <loading v-show="loading"></loading>
           <div class="work-list">
-            <div class="list-box" v-for="(item,index) in list" :key="index">
-              <router-link :to="{ name: 'companylist', params: { id: item.itemId }}">
+            <div class="list-box" v-for="(item,index) in listData" :key="index">
+              <router-link to="/mydeliver">
                 <span class="left">
                   <img v-lazy="item.headimgurl" alt="">
                 </span>
@@ -51,19 +53,16 @@
 </template>
 <script>
 import gotop from "../../common/gotop";
-import loading from "../../common/loading";
 import PullTo from "vue-pull-to";
 export default {
   components: {
     PullTo,
-    loading,
     gotop
   },
   data() {
     return {
       ifshow: false,
       elshow: false,
-      loading: false,
       qualification: '',
       number: '',
       address: '',
@@ -71,11 +70,9 @@ export default {
       jobs: '',
       salary: '',
       years: '',
-      pageNow: 2,
-      search: '',
-      searchData: [
-        // { title: '所有', id: 0 }, { title: '全职', id: 321 }, { title: '兼职', id: 1233 }
-      ],
+      pageNow: 1,
+      search: '所有',
+      searchData: [{ title: '所有' }, { title: '全职' }, { title: '兼职' }],
       selected: '',
       myArea: '',
       cityData: [
@@ -206,17 +203,8 @@ export default {
       .then(response => {
         //console.log(response)
         this.cityData = response.data.object.address[0].menus;
-        this.searchData = response.data.object.typess;
-        this.searchData.unshift({ title: '所有', id: 0 })
         this.selected = this.cityData[0].id
-        this.search = this.searchData[0].id
-        //拿到当前区id
-        for (let i = 0; i < this.cityData.length; i++) {
-          if (this.cityData[i].id === this.selected) {
-            this.myArea = this.cityData[i].menus[0].id
-          }
-        }
-        //console.log(this.searchData[0].title)
+        // console.log(this.cityData[0].id)
       })
       .catch(error => {
         console.log(error);
@@ -224,45 +212,33 @@ export default {
       });
   },
   methods: {
-    getlist(loaded) {
-      this.$ajax.interceptors.request.use((config) => {
-        //在请求发送之前做一些事
-        //console.log(config)
-        this.ifshow = false;
-        this.elshow = false;
-        return config;
-      }, function (error) {
-        //当出现请求错误是做一些事
-        alert('出错了!')
-        return Promise.reject(error);
-      });
-      this.$ajax({
-        method: 'get',
-        url: this.psta + '/item/list' + '?city=' + this.selected + '&area=' + this.myArea + '&pageNow=' + this.pageNow + '&typess=' + this.search,
-      })
-        .then(response => {
-          //console.log(response)
-          let listPage = response.data.object.list;
-
-          for (let i = 0; i < listPage.length; i++) {
-            this.list.push(listPage[i])
-          }
-          this.pageNow++
-          loaded("done");
-
-        })
-        .catch(error => {
-          console.log(error);
-          //alert('网络错误，不能访问');
-        });
-    },
     refresh(loaded) {
-      this.list = [];
-      this.pageNow = 1;
-      this.getlist(loaded);
+      setTimeout(() => {
+        this.loadmore(loaded);
+        loaded('done');
+      }, 2000);
     },
     loadmore(loaded) {
-      this.getlist(loaded)
+      setTimeout(() => {
+        this.$ajax({
+          method: 'get',
+          url: this.psta + '/item/list' + '?city=' + this.selected + '&area=' + this.myArea + '&pageNow=' + ++this.pageNow + '&pageSize=' + 2,
+        })
+          .then(response => {
+            //console.log(response)
+            let listPage = response.data.object.list;
+
+            for (let i = 0; i < listPage.length; i++) {
+              this.list.push(listPage[i])
+            }
+
+          })
+          .catch(error => {
+            console.log(error);
+            //alert('网络错误，不能访问');
+          });
+        loaded('done');
+      }, 2000);
     },
   },
   computed: {
@@ -275,36 +251,36 @@ export default {
         }
       }
     },
-    // listData() {
-    //   // var search = this.search
-    //   // //console.log(search)
-    //   // if (search == this.searchData[0].id) {
-    //   //   this.elshow = false;
-    //   //   return this.list;
-    //   // }
-    //   // if (search == this.searchData[0].title && this.selected == this.cityData[0].title) {
-    //   //  // console.log(search, this.cityData[0].title)
-    //   //   return this.list;
-    //   // }
-    //   // var all = [];
-    //   // if (search) {
-    //   //   for (var i = 0; i < this.list.length; i++) {
-    //   //     if (this.list[i].typessTitle.toLowerCase().indexOf(search) != -1) {
-    //   //       //console.log(this.list[i])
-    //   //       all.push(this.list[i]);
-    //   //     }
-    //   //   }
+    listData() {
+      var search = this.search
+      //console.log(search)
+      if (search == this.searchData[0].title) {
+        this.elshow = false;
+        return this.list;
+      }
+      // if (search == this.searchData[0].title && this.selected == this.cityData[0].title) {
+      //  // console.log(search, this.cityData[0].title)
+      //   return this.list;
+      // }
+      var all = [];
+      if (search) {
+        for (var i = 0; i < this.list.length; i++) {
+          if (this.list[i].typessTitle.toLowerCase().indexOf(search) != -1) {
+            //console.log(this.list[i])
+            all.push(this.list[i]);
+          }
+        }
 
-    //   //   if (all == '') {
-    //   //     this.elshow = true;
-    //   //   } else {
-    //   //     this.elshow = false;
-    //   //   }
+        if (all == '') {
+          this.elshow = true;
+        } else {
+          this.elshow = false;
+        }
 
-    //   //   return all;
-    //   // }
-    //   return this.list;
-    // }
+        return all;
+      }
+      return this.list;
+    }
     // listData() {
     //   var search = this.search
     //   if (search) {
@@ -319,9 +295,10 @@ export default {
   watch: {
     myArea: {
       handler(data) {
+        //console.log(data)
         this.$ajax({
           method: 'get',
-          url: this.psta + '/item/list' + '?city=' + this.selected + '&area=' + this.myArea + '&typess=' + this.search,
+          url: this.psta + '/item/list' + '?city=' + this.selected + '&area=' + this.myArea,
         })
           .then(response => {
             //console.log(response)
@@ -335,36 +312,17 @@ export default {
       },
       deep: true
     },
-    search: {
-      handler(data) {
-        this.$ajax({
-          method: 'get',
-          url: this.psta + '/item/list' + '?city=' + this.selected + '&area=' + this.myArea + '&typess=' + this.search,
-        })
-          .then(response => {
-            this.list = response.data.object.list;
-            //console.log(response)
-          })
-          .catch(error => {
-            console.log(error);
-            //alert('网络错误，不能访问');
-          });
-      },
-      deep: true
-    },
     list: {
       handler(data) {
         if (this.list.length == 0) {
           this.ifshow = true;
-          this.loading = true;
-          //console.log(this.ifshow)
+          console.log(this.ifshow)
         } else {
           this.ifshow = false;
-          this.loading = false;
         }
       },
       deep: true
-    },
+    }
   }
 
 }

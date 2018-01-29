@@ -4,7 +4,6 @@ import myinfo from '@/components/myinfo/myinfo'
 import findwork from '@/components/findwork/findwork'
 import mydeliver from '@/components/findwork/mydeliver'
 import companylist from '@/components/findwork/companylist'
-import deliverlist from '@/components/findwork/deliverlist'
 Vue.use(Router)
 
 export default new Router({
@@ -24,14 +23,9 @@ export default new Router({
       component: mydeliver
     },
     {
-      path: '/companylist:id',
+      path: '/companylist',
       name: 'companylist',
       component: companylist
-    },
-    {
-      path: '/deliverlist:id',
-      name: 'deliverlist',
-      component: deliverlist
     }
   ]
 })
