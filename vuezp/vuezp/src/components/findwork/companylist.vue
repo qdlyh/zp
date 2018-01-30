@@ -109,8 +109,15 @@ export default {
             })
                 .then(response => {
                     //console.log(response)
-                    this.popup = true;
-                    this.text = '简历已发送'
+                    let list = response.data.object;
+                    console.log(list)
+                    if (list == 1) {
+                        this.popup = true;
+                        this.text = '简历投递成功'
+                    } else {
+                        this.popup = true;
+                        this.text = '你已经投递过该岗位'
+                    }
                 })
                 .catch(error => {
                     console.log(error);

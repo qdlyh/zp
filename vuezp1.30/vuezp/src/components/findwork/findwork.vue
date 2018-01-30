@@ -3,7 +3,7 @@
     <div class="findwork">
       <form action="" id="form">
         <span>市:</span>
-        <select v-model="myCity">
+        <select v-model="selected">
           <option v-for="(data,index) in cityData" :value="data.id" :key="index">
             {{data.title}}
           </option>
@@ -19,7 +19,7 @@
           <option value="" v-for="(item,index) in searchData" :key="index" :value="item.id">{{item.title}}</option>
         </select>
       </form>
-      <!-- <span>值：{{myCity}}{{myArea}}{{search}}</span> -->
+      <!-- <span>值：{{selected}}{{myArea}}{{search}}</span> -->
       <div class="ifshow" v-if="ifshow==true||elshow==true">
         <p>抱歉！该地区没有找到您需要的职位</p>
       </div>
@@ -64,11 +64,20 @@ export default {
       ifshow: false,
       elshow: false,
       loading: false,
+      qualification: '',
+      number: '',
+      address: '',
+      typess: '',
+      jobs: '',
+      salary: '',
+      years: '',
       pageNow: 2,
       search: '',
-      myCity: '',
+      searchData: [
+        // { title: '所有', id: 0 }, { title: '全职', id: 321 }, { title: '兼职', id: 1233 }
+      ],
+      selected: '',
       myArea: '',
-      searchData: [],
       cityData: [
         //   {
         //     title: '城市',
@@ -95,8 +104,98 @@ export default {
         //       }
         //     ]
         //   },
+        //   {
+        //     title: '广州市1',
+        //     area: [
+        //       {
+        //         text: '市区1'
+        //       },
+        //       {
+        //         text: '天河区1'
+        //       },
+        //       {
+        //         text: '白云区1'
+        //       },
+        //       {
+        //         text: '海珠区1'
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     title: '广州市2',
+        //     area: [
+        //       {
+        //         text: '市区2'
+        //       },
+        //       {
+        //         text: '天河区2'
+        //       },
+        //       {
+        //         text: '白云区2'
+        //       },
+        //       {
+        //         text: '海珠区2'
+        //       }
+        //     ]
+        //   }
       ],
-      list: [],
+      list: [
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   iteme:
+        //     '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居',
+        //   jz: '全职'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司1',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   iteme:
+        //     '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居',
+        //   jz: '全职'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司2',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   iteme:
+        //     '主要负责公司账单主要负责公司账兼职主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居',
+        //   jz: '全职'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司全职a',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   iteme:
+        //     '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居',
+        //   jz: '兼职'
+        // },
+        // {
+        //   src: require('../../images/logo.png'),
+        //   title: '嘻嘻哈哈有限公司b',
+        //   itemp: '合资|100-150|房地产',
+        //   itemq: '助理会计',
+        //   itemw: '3000-4500',
+        //   iteme:
+        //     '主要负责公司账单主全职要负责公司账主要负责主要负责公司账主要负责公司账主要负责公司账主要负责公司账公司账主主要负责公司账主要负责公司账主要负责公司账主要负责公司账要负责公主要负责公司账主要负责公司账司账',
+        //   itemr: '广东省广州市白云区鸣泉居',
+        //   jz: '兼职'
+        // },
+      ],
     }
   },
   mounted() {
@@ -109,9 +208,15 @@ export default {
         this.cityData = response.data.object.address[0].menus;
         this.searchData = response.data.object.typess;
         this.searchData.unshift({ title: '所有', id: 0 })
-        this.myCity = this.cityData[0].id
-        this.myArea = this.cityData[0].menus[0].id
+        this.selected = this.cityData[0].id
         this.search = this.searchData[0].id
+        //拿到当前区id
+        for (let i = 0; i < this.cityData.length; i++) {
+          if (this.cityData[i].id === this.selected) {
+            this.myArea = this.cityData[i].menus[0].id
+          }
+        }
+        //console.log(this.searchData[0].title)
       })
       .catch(error => {
         console.log(error);
@@ -133,7 +238,7 @@ export default {
       });
       this.$ajax({
         method: 'get',
-        url: this.psta + '/item/list' + '?city=' + this.myCity + '&area=' + this.myArea + '&pageNow=' + this.pageNow + '&typess=' + this.search,
+        url: this.psta + '/item/list' + '?city=' + this.selected + '&area=' + this.myArea + '&pageNow=' + this.pageNow + '&typess=' + this.search,
       })
         .then(response => {
           //console.log(response)
@@ -142,11 +247,7 @@ export default {
           for (let i = 0; i < listPage.length; i++) {
             this.list.push(listPage[i])
           }
-
-          if (listPage.length != 0) {
-            this.pageNow++;
-          }
-
+          this.pageNow++
           loaded("done");
 
         })
@@ -167,20 +268,60 @@ export default {
   computed: {
     selection() {
       for (let i = 0; i < this.cityData.length; i++) {
-        if (this.cityData[i].id == this.myCity) {
+        //console.log(this.cityData[i].title, this.cityData[i].menus[0].title)
+        if (this.cityData[i].id === this.selected) {
           this.myArea = this.cityData[i].menus[0].id
           return this.cityData[i].menus;
         }
       }
     },
+    // listData() {
+    //   // var search = this.search
+    //   // //console.log(search)
+    //   // if (search == this.searchData[0].id) {
+    //   //   this.elshow = false;
+    //   //   return this.list;
+    //   // }
+    //   // if (search == this.searchData[0].title && this.selected == this.cityData[0].title) {
+    //   //  // console.log(search, this.cityData[0].title)
+    //   //   return this.list;
+    //   // }
+    //   // var all = [];
+    //   // if (search) {
+    //   //   for (var i = 0; i < this.list.length; i++) {
+    //   //     if (this.list[i].typessTitle.toLowerCase().indexOf(search) != -1) {
+    //   //       //console.log(this.list[i])
+    //   //       all.push(this.list[i]);
+    //   //     }
+    //   //   }
+
+    //   //   if (all == '') {
+    //   //     this.elshow = true;
+    //   //   } else {
+    //   //     this.elshow = false;
+    //   //   }
+
+    //   //   return all;
+    //   // }
+    //   return this.list;
+    // }
+    // listData() {
+    //   var search = this.search
+    //   if (search) {
+    //     return this.list.filter(function(product) {
+    //       console.log(product.typessTitle)
+    //       return product.typessTitle.toLowerCase().indexOf(search) > -1
+    //     })
+    //   }
+    //   return this.list
+    // }
   },
   watch: {
     myArea: {
       handler(data) {
-        this.pageNow = 2;  //切换初始化分页
         this.$ajax({
           method: 'get',
-          url: this.psta + '/item/list' + '?city=' + this.myCity + '&area=' + this.myArea + '&typess=' + this.search,
+          url: this.psta + '/item/list' + '?city=' + this.selected + '&area=' + this.myArea + '&typess=' + this.search,
         })
           .then(response => {
             //console.log(response)
@@ -196,10 +337,9 @@ export default {
     },
     search: {
       handler(data) {
-        this.pageNow = 2;  //切换初始化分页
         this.$ajax({
           method: 'get',
-          url: this.psta + '/item/list' + '?city=' + this.myCity + '&area=' + this.myArea + '&typess=' + this.search,
+          url: this.psta + '/item/list' + '?city=' + this.selected + '&area=' + this.myArea + '&typess=' + this.search,
         })
           .then(response => {
             this.list = response.data.object.list;
@@ -259,8 +399,7 @@ $text: #535353;
   }
   .ifshow {
     width: 100%;
-    height: 100%;
-    position: fixed;
+    height: 100vh;
     background: #fff;
     p {
       text-align: center;

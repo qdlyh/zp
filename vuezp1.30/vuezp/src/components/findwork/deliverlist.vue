@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- <h2>{{$route.query.personalId}}</h2> -->
-        <!-- <h2>{{ $route.params.id }}</h2> -->
+        <h2>{{ $route.params.id }}</h2>
         <div class="myinfo" v-for="(item,index) in list" :key="index">
             <form action="">
                 <div class="top-img">
