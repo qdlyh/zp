@@ -134,7 +134,7 @@ export default {
     /* 已注册用户信息 */
     this.$ajax({
       method: 'get',
-      url: this.psta + '/user/perinfo?userId=4',
+      url: this.psta + '/user/per?userId=4',
     })
       .then(response => {
         //console.log(response)
@@ -267,7 +267,7 @@ export default {
         formData.append('name', this.name);
         formData.append('sex', this.selectSex);
         formData.append('telephone', this.phone);
-        formData.append('workTime', this.selectYears);
+        formData.append('years', this.selectYears);
         formData.append('title', this.position);
         formData.append('qualification', this.selectQualification);
         formData.append('description', this.describe);
@@ -315,7 +315,7 @@ export default {
         formData.append('name', this.name);
         formData.append('sex', this.selectSex);
         formData.append('telephone', this.phone);
-        formData.append('workTime', this.selectYears);
+        formData.append('years', this.selectYears);
         formData.append('title', this.position);
         formData.append('qualification', this.selectQualification);
         formData.append('description', this.describe);
