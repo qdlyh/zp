@@ -87,7 +87,7 @@ export default {
       selectQualification: '',
       popup: false,
       text: '',
-      headerImage: require('../../images/logo.png'),
+      headerImage: require('../../images/my.png'),
       ifImage: false, //判断图片是否为同一张
       picValue: '',
       cropper: '',
