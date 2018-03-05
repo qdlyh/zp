@@ -23,7 +23,11 @@
 </template>
 
 <script>
+import Dialog from "../../common/Dialog";
 export default {
+	components: {
+		Dialog
+	},
 	data() {
 		return {
 			popup: false,
@@ -41,7 +45,7 @@ export default {
 	mounted() {
 		this.$ajax.get(this.psta + '/invoice/invoiceInfo?userId=' + this.$parent.userId)
 			.then(res => {
-				// console.log(res.data);
+				//console.log(res.data);
 				var temp = res.data.object;
 				if (temp != null) {
 					this.id = temp.id;
@@ -57,40 +61,19 @@ export default {
 	},
 	methods: {
 		save() {
-			let have = true;
-			if (this.id == null || this.name.length == 0 || this.number.length == 0 || this.address.length == 0 || this.telephone.length == 0 || this.bank.length == 0 || this.banknum.length == 0) {
-				have = false;
-				this.popup = true;
-				this.text = '请填写完整的发票信息'
-				return false;
+			var params = new FormData();
+			var json = { 'userId': this.$parent.userId, 'name': this.name, 'number': this.number, 'address': this.address, 'telephone': this.telephone, 'bank': this.bank, 'banknum': this.banknum };
+			for (let key in json) {
+				params.append(key, json[key]);
 			}
-			if (have) {
-				var params = new FormData();
-				var json = { 'userId': this.$parent.userId, 'name': this.name, 'number': this.number, 'address': this.address, 'telephone': this.telephone, 'bank': this.bank, 'banknum': this.banknum };
-				for (let key in json) {
-					params.append(key, json[key]);
-				}
-				if (this.id != null) {
-					params.append('id', this.id);
-				}
-				this.$ajax.interceptors.request.use((config) => {
-					//在请求发送之前做一些事
-					//console.log(config)
+			if (this.id != null) {
+				params.append('id', this.id);
+			}
+			this.$ajax.post(this.psta + '/invoice/open ', params)
+				.then(response => {
 					this.popup = true;
-					this.text = '正在保存...';
-					return config;
-				}, function (error) {
-					//当出现请求错误是做一些事
-					alert('出错了!')
-					return Promise.reject(error);
-				});
-				this.$ajax.post(this.psta + '/invoice/open ', params)
-					.then(response => {
-						// this.popup = true;
-						// this.text = response.data.message;
-						this.$router.push({ path: '/nav' })
-					})
-			}
+					this.text = response.data.message;
+				})
 		}
 	},
 	watch: {

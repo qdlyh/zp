@@ -20,10 +20,11 @@
         </select>
       </form>
       <!-- <span>值：{{myCity}}{{myArea}}{{search}}</span> -->
-      <div class="ifshow" v-if="ifshow==true">
+      <div class="ifshow" v-if="ifshow==true||elshow==true">
         <p>抱歉！该地区没有找到您需要的职位</p>
       </div>
       <div id="pullTo" v-else>
+        <loading v-show="loading"></loading>
         <pull-to :top-load-method="refresh" :bottom-load-method="loadmore">
           <div class="work-list">
             <div class="list-box" v-for="(item,index) in list" :key="index">
@@ -38,7 +39,7 @@
                   <i>{{item.jobsTitle}}&nbsp;&nbsp;&nbsp;月薪：{{item.salaryTitle}}元</i>
                   <p class="describe">{{item.cdescription}}</p>
                   <p>{{item.address}}</p>
-                  <!-- <p>{{item.typessTitle}}</p> -->
+                  <p>{{item.typessTitle}}</p>
                 </span>
                 <!-- </router-link> -->
               </a>
@@ -47,21 +48,24 @@
         </pull-to>
       </div>
       <gotop></gotop>
-      <loading v-show="!list.length"></loading>
     </div>
   </div>
 </template>
 <script>
 import gotop from "../../common/gotop";
+import loading from "../../common/loading";
 import PullTo from "vue-pull-to";
 export default {
   components: {
     PullTo,
+    loading,
     gotop
   },
   data() {
     return {
       ifshow: false,
+      elshow: false,
+      loading: false,
       pageNow: 2,
       search: '',
       myCity: '',
@@ -133,6 +137,7 @@ export default {
         //在请求发送之前做一些事
         //console.log(config)
         this.ifshow = false;
+        this.elshow = false;
         return config;
       }, function (error) {
         //当出现请求错误是做一些事
@@ -229,8 +234,11 @@ export default {
       handler(data) {
         if (this.list.length == 0) {
           this.ifshow = true;
+          this.loading = true;
+          //console.log(this.ifshow)
         } else {
           this.ifshow = false;
+          this.loading = false;
         }
       },
       deep: true
@@ -271,7 +279,6 @@ $text: #535353;
     width: 100%;
     height: 100%;
     position: fixed;
-    z-index: 9999;
     background: #fff;
     p {
       text-align: center;
@@ -336,11 +343,14 @@ $text: #535353;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         overflow: hidden;
+        padding-left: 20px;
       }
-      // .sign-p {
-      //   padding-left: 20px;
-      // }
+      .sign-p {
+        padding-left: 20px;
+      }
     }
   }
 }
 </style>
+
+

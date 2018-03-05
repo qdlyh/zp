@@ -55,10 +55,12 @@
                         <span class="sign-span">岗位描述：</span>
                         <p class="sign-p">{{item.idescription}}</p>
                     </div>
+                    <!-- <div class="btn-blue btn-sign">
+                        <router-link to="/findwork">发送简历</router-link>
+                    </div> -->
                 </div>
             </form>
         </div>
-        <loading v-if="!list.length"></loading>
     </div>
 </template>
 <script>
@@ -69,7 +71,7 @@ export default {
             list: []
         }
     },
-    activated() {
+    mounted() {
         this.itemId = this.$route.params.id
         this.$ajax({
             method: 'get',

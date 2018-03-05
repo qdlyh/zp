@@ -58,8 +58,8 @@
           <div>
             <span class="sign">描述：</span>
             <span class="describe-box">
-              <textarea name="text" v-model.trim="describe" cols="30" rows="10" maxlength="100"></textarea>
-              <i class="countText">{{countText}}/100</i>
+              <textarea name="text" v-model.trim="describe" cols="30" rows="10" maxlength="200"></textarea>
+              <i class="countText">{{countText}}/200</i>
             </span>
           </div>
           <div class="btn-blue" @click="submit()" v-if="message==''">
@@ -77,7 +77,11 @@
 <script>
 import Cropper from 'cropperjs';
 import CropperCss from '../../css/cropicrec.css'
+import Dialog from "../../common/Dialog";
 export default {
+  components: {
+    Dialog
+  },
   data() {
     return {
       name: '',
@@ -277,17 +281,6 @@ export default {
         formData.append('title', this.position);
         formData.append('qualification', this.selectQualification);
         formData.append('description', this.describe);
-        this.$ajax.interceptors.request.use((config) => {
-          //在请求发送之前做一些事
-          //console.log(config)
-          this.popup = true;
-          this.text = '正在保存...';
-          return config;
-        }, function (error) {
-          //当出现请求错误是做一些事
-          alert('出错了!')
-          return Promise.reject(error);
-        });
         this.$ajax({
           method: 'post',
           url: this.psta + '/user/pregister',
@@ -295,8 +288,9 @@ export default {
         })
           .then(response => {
             //console.log(response)
+            this.popup = true;
+            this.text = '认证成功';
             localStorage.setItem("headerImage", this.headerImage)
-            this.$router.push({ path: '/nav' })
           })
           .catch(error => {
             console.log(error);
@@ -337,17 +331,6 @@ export default {
         formData.append('title', this.position);
         formData.append('qualification', this.selectQualification);
         formData.append('description', this.describe);
-        this.$ajax.interceptors.request.use((config) => {
-          //在请求发送之前做一些事
-          //console.log(config)
-          this.popup = true;
-          this.text = '正在保存...';
-          return config;
-        }, function (error) {
-          //当出现请求错误是做一些事
-          alert('出错了!')
-          return Promise.reject(error);
-        });
         this.$ajax({
           method: 'post',
           url: this.psta + '/user/pperfect',
@@ -355,8 +338,9 @@ export default {
         })
           .then(response => {
             //console.log(response);
+            this.popup = true;
+            this.text = '保存成功';
             localStorage.setItem("headerImage", this.headerImage)
-            this.$router.push({ path: '/nav' })
           })
           .catch(error => {
             console.log(error);

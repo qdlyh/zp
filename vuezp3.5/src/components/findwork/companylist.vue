@@ -13,99 +13,73 @@
                         <span>企业名称：</span>
                         <p>{{item.name}}</p>
                     </div>
-                    <hr/>
                     <div>
                         <span>企业性质：</span>
                         <p>{{item.natureTitle}}</p>
                     </div>
-                    <hr/>
                     <div>
                         <span>经营范围：</span>
                         <p>{{item.sizeTitle}}</p>
                     </div>
-                    <hr/>
                     <div>
                         <span>联系人
                             <i class="sign-i">：</i>
                         </span>
                         <p>{{item.linkman}}</p>
                     </div>
-                    <hr/>
                     <div>
                         <span>联系电话：</span>
                         <p>{{item.linkNumber}}</p>
                     </div>
-                    <hr/>
                     <div>
                         <span>企业地址：</span>
                         <p>{{item.address}}</p>
                     </div>
-                    <hr/>
-                    <div>
-                        <span>企业描述：</span>
-                        <p>{{item.cdescription}}</p>
+                    <div class="sign-div">
+                        <span class="sign-span">企业描述：</span>
+                        <p class="sign-p">{{item.cdescription}}</p>
                     </div>
-                    <hr/>
                     <div>
                         <span>招聘岗位：</span>
                         <p>{{item.jobsTitle}}</p>
                     </div>
-                    <hr/>
                     <div>
                         <span>工作年限：</span>
                         <p>{{item.yearsTitle}}</p>
                     </div>
-                    <hr/>
                     <div>
                         <span>岗位薪资：</span>
                         <p>{{item.salaryTitle}}</p>
                     </div>
-                    <hr/>
-                    <div>
-                        <span>岗位描述：</span>
-                        <p>{{item.idescription}}</p>
+                    <div class="sign-div" style="margin-bottom:30px;">
+                        <span class="sign-span">岗位描述：</span>
+                        <p class="sign-p">{{item.idescription}}</p>
                     </div>
-                    <hr/>
                     <div class="btn-blue btn-sign" @click="submit()">
                         <router-link to="">发送简历</router-link>
                     </div>
                 </div>
             </form>
         </div>
-
-        <div class="weui-box" v-show="weuiDialog">
-            <div class="weui-mask"></div>
-            <div class="weui-dialog">
-                <div class="weui-dialog__hd">
-                    <strong>您还没有注册</strong>
-                </div>
-                <div class="weui-dialog__bd">
-                    <p>是否转跳到注册信息列表？</p>
-                </div>
-                <div class="weui-dialog__ft">
-                    <p class="weui-dialog__btn" @click="weuiDialog = !weuiDialog">取消</p>
-                    <p class="weui-dialog__btn" @click="go()">确认</p>
-                </div>
-            </div>
-        </div>
         <Dialog :popup="popup" :text="text"></Dialog>
-        <loading v-if="!list.length"></loading>
     </div>
 </template>
 <script>
+import Dialog from "../../common/Dialog";
 export default {
+    components: {
+        Dialog
+    },
     data() {
         return {
             itemId: '',
             personalId: '',
             text: '',
             popup: false,
-            weuiDialog: false,
-            showall: false,
             list: []
         }
     },
-    activated() {
+    mounted() {
         this.itemId = this.$route.params.id                //列表路径id
         this.personalId = this.$route.query.personalId     //url参数
         this.$ajax({
@@ -136,22 +110,14 @@ export default {
             })
                 .then(response => {
                     //console.log(response)
-                    if (response.data.state == 2) {
-                        /* 没有注册的用户 */
-                        this.popup = false;
-                        this.weuiDialog = true;
-                    }
                     this.popup = true;
                     this.text = response.data.message
+
                 })
                 .catch(error => {
                     console.log(error);
                     //alert('网络错误，不能访问');
                 });
-        },
-        go() {
-            /* 还没注册的用户点击确认的话转跳到注册地址 */
-            window.location.href = "./lrsf.html#/regsel?userId=" + this.$parent.userId
         }
     },
     watch: {
@@ -174,9 +140,6 @@ $text: #535353;
 .myinfo {
   padding: 10px;
 }
-.active {
-  height: 100px;
-}
 .top-img {
   background: #81959c;
   height: 130px;
@@ -196,7 +159,7 @@ $text: #535353;
   div {
     height: 30px;
     margin-top: 10px;
-    // border-bottom: 0.5px solid #81959c;
+    border-bottom: 0.5px solid #81959c;
   }
   span {
     color: $text;
@@ -212,19 +175,25 @@ $text: #535353;
     display: inline-block;
     float: left;
     width: 70%;
-    // display: -webkit-box;
-    // -webkit-box-orient: vertical;
-    // -webkit-line-clamp: 1;
-    // overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
     margin-bottom: 5px;
     display: flex;
   }
-  //   .sign-p {
-  //     display: -webkit-box;
-  //     -webkit-box-orient: vertical;
-  //     -webkit-line-clamp: 2;
-  //     overflow: hidden;
-  //   }
+  .sign-div {
+    height: 50px;
+  }
+  .sign-span {
+    width: 30%;
+  }
+  .sign-p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
   .sign-i {
     padding-left: 10px;
   }

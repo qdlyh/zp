@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div class="ifshow" v-if="ifshow==true">
-      <p>您还没有投递公司简历</p>
-    </div>
-    <div id="pullTo" v-else>
+    <div id="pullTo">
       <loading v-show="loading"></loading>
       <pull-to :top-load-method="refresh" :bottom-load-method="loadmore">
         <div class="findwork">
@@ -19,7 +16,7 @@
                   <i>{{item.jobsTitle}}&nbsp;&nbsp;&nbsp;月薪：{{item.salaryTitle}}元</i>
                   <p class="describe">{{item.cdescription}}</p>
                   <p>{{item.address}}</p>
-                  <!-- <p>{{item.typessTitle}}</p> -->
+                  <p>{{item.typessTitle}}</p>
                   <p class="time">投递时间：{{item.createdDate}}</p>
                 </span>
               </router-link>
@@ -33,32 +30,22 @@
 </template>
 <script>
 import gotop from "../../common/gotop";
+import loading from "../../common/loading";
 import PullTo from "vue-pull-to";
 export default {
   components: {
     PullTo,
+    loading,
     gotop
   },
   data() {
     return {
       pageNow: 2,
       loading: false,
-      ifshow: false,
       list: []
     }
   },
-  activated() {
-    // console.log(this.ifshow)
-    this.$ajax.interceptors.request.use((config) => {
-      //在请求发送之前做一些事
-      //console.log(config)
-      this.ifshow = false;
-      return config;
-    }, function (error) {
-      //当出现请求错误是做一些事
-      alert('出错了!')
-      return Promise.reject(error);
-    });
+  mounted() {
     this.$ajax({
       method: 'get',
       url: this.psta + '/item/myGive?userId=' + this.$parent.userId,
@@ -66,32 +53,15 @@ export default {
       .then(response => {
         //console.log(response)
         this.list = response.data.object;
-        // console.log(response.data.object)
+        //console.log(this.list)
       })
       .catch(error => {
         console.log(error);
         //alert('网络错误，不能访问');
       });
   },
-  // updated() {
-  //   if (this.list.length == 0) {
-  //     this.ifshow = true;
-  //   } else {
-  //     this.ifshow = false;
-  //   }
-  // },
   methods: {
     getList(loaded) {
-      this.$ajax.interceptors.request.use((config) => {
-        //在请求发送之前做一些事
-        //console.log(config)
-        this.ifshow = false;
-        return config;
-      }, function (error) {
-        //当出现请求错误是做一些事
-        alert('出错了!')
-        return Promise.reject(error);
-      });
       this.$ajax({
         method: 'get',
         url: this.psta + '/item/myGive' + '?userId=' + this.$parent.userId + '&pageNow=' + this.pageNow,
@@ -125,12 +95,8 @@ export default {
     list: {
       handler(data) {
         if (this.list.length == 0) {
-          // console.log(this.list)
-          this.ifshow = true;
           this.loading = true;
         } else {
-          // console.log(this.list.length)
-          this.ifshow = false;
           this.loading = false;
         }
       },
@@ -149,18 +115,7 @@ $text: #535353;
   bottom: 0px;
   overflow: hidden;
 }
-.ifshow {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  background: #fff;
-  p {
-    text-align: center;
-    padding-top: 50%;
-    font-size: 16px;
-    color: $text;
-  }
-}
+
 .findwork {
   .work-list {
     padding: 10px;
@@ -218,6 +173,10 @@ $text: #535353;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         overflow: hidden;
+        padding-left: 20px;
+      }
+      .sign-p {
+        padding-left: 20px;
       }
       .time {
         display: flex;
