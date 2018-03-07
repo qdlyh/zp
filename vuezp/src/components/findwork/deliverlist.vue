@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div class="ifshow" v-if="ifshow==true">
+    <div class="ifshow" v-if="ifshow">
       <img src="../../images/80852461.png" alt="">
     </div>
+    <loading v-show="!list.length"></loading>
     <div id="pullTo">
       <pull-to :top-load-method="refresh" :bottom-load-method="loadmore">
         <div class="findwork">
@@ -16,7 +17,7 @@
                 <span class="right">
                   <h3>{{item.name}}</h3>
                   <p class="sign-p">{{item.natureTitle}}&nbsp;|&nbsp;{{item.sizeTitle}}&nbsp;|&nbsp;{{item.scope}}</p>
-                  <i>{{item.jobsTitle}}&nbsp;&nbsp;&nbsp;月薪：{{item.salaryTitle}}元</i>
+                  <i>{{item.jobsTitle}}&nbsp;&nbsp;&nbsp;月薪：{{item.salaryTitle}}</i>
                   <p class="describe">{{item.cdescription}}</p>
                   <p>{{item.address}}</p>
                   <!-- <p>{{item.typessTitle}}</p> -->
@@ -30,7 +31,6 @@
       </pull-to>
     </div>
     <gotop></gotop>
-    <loading v-show="!list.length"></loading>
   </div>
 </template>
 <script>
@@ -143,6 +143,7 @@ export default {
 $text: #535353;
 
 #pullTo {
+  max-width: 750px;
   position: absolute;
   width: 100%;
   top: 0px;
@@ -150,14 +151,16 @@ $text: #535353;
   overflow: hidden;
 }
 .ifshow {
+  max-width: 750px;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   position: fixed;
   background: #fff;
   z-index: 9999;
   text-align: center;
   img {
     margin-top: 10%;
+    width: 100%;
   }
 }
 .findwork {

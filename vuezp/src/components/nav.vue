@@ -1,6 +1,6 @@
 <template>
     <div class="nav">
-         <!-- <h2>{{ this.$parent.userId }}</h2> -->
+        <!-- <h2>{{ this.$parent.userId }}</h2> -->
         <div class="top-img">
             <img :src="headerImage">
         </div>
@@ -50,7 +50,7 @@ export default {
         if (localStorage.getItem("headerImage") != null) {
             this.headerImage = localStorage.getItem("headerImage")
         }
-    }
+    },
 }
 </script>
 

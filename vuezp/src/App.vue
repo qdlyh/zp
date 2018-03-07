@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app">  
     <!-- <h2>{{this.$route.query.userId}}</h2> -->
     <div class="bgpic"></div>
     <keep-alive>
@@ -35,6 +35,7 @@ i {
 }
 #app {
   margin: 0 auto;
+  max-width: 750px;
   -webkit-overflow-scrolling: touch;  //在ios上滑动不流畅样式设置处理
 }
 .bgpic {
