@@ -9,13 +9,12 @@ module.exports = {
 
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    assetsPublicPath: '/',
     proxyTable: {
       '/proxyapi': {
         //target: "http://hx.tunnel.qydev.com", //设置你调用的接口域名和端口号 别忘了加http
         //target: "http://192.168.1.112/mvc/",
-        // target:'http://hxxing.nat300.top/mvc/',
-        target: 'http://huipin.birds-resort.com/mvc/',
+        target:'http://hxxing.nat300.top/mvc/',
         changeOrigin: true,
         pathRewrite: {
           '^/proxyapi': '' //这里理解成用‘/api'代替target里面的地址，后面组件中我们掉接口时直接用api代替 

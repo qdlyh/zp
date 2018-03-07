@@ -5,7 +5,7 @@
             <img :src="headerImage">
         </div>
         <div class="my-nav">
-            <div class="nav-box">
+            <div class="nav-box" :style="">
                 <router-link to="/myinfo" class="nav-list">
                     <div>
                         <span class="left"><img src="../images/12312355.png" alt=""></span>

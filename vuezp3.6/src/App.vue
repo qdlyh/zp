@@ -35,7 +35,6 @@ i {
 }
 #app {
   margin: 0 auto;
-  -webkit-overflow-scrolling: touch;  //在ios上滑动不流畅样式设置处理
 }
 .bgpic {
   position: fixed;
@@ -88,6 +87,96 @@ i {
 //   }
 // }
 
+.weui-box {
+  .weui-mask {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    transition: opacity 0.5s;
+    background: #000;
+    opacity: 0.6;
+  }
+
+  .weui-dialog {
+    position: fixed;
+    transition: opacity 0.5s;
+    z-index: 5000;
+    width: 70%;
+    // max-width: 300px;
+    // height: 25%;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    overflow: hidden;
+    .weui-dialog__hd {
+      // padding: 1.3em 1.6em .5em;
+      height: 60px;
+      line-height: 60px;
+      strong {
+        font-size: 18px;
+      }
+    }
+    .weui-dialog__bd {
+      padding: 0 1.6em 0.8em;
+      min-height: 50px;
+      line-height: 50px;
+      font-size: 16px;
+      word-wrap: break-word;
+      word-break: break-all;
+      color: #999;
+    }
+    .weui-dialog__ft {
+      position: relative;
+      height: 50px;
+      line-height: 50px;
+      font-size: 16px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      &::after {
+        content: ' ';
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        height: 1px;
+        border-top: 1px solid #d5d5d6;
+        -webkit-transform: scaleY(0.5);
+      }
+    }
+    .weui-dialog__btn {
+      display: block;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      height: 50px;
+      line-height: 50px;
+      color: #3cc51f;
+      text-decoration: none;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      position: relative;
+      &::after {
+        content: ' ';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1px;
+        bottom: 0;
+        border-left: 1px solid #d5d5d6;
+        -webkit-transform-origin: 0 0;
+        -webkit-transform: scaleX(0.5);
+        transform: scaleX(0.5);
+      }
+    }
+  }
+}
 
 /* 懒加载图片过渡效果 */
 img[lazy='loaded'] {

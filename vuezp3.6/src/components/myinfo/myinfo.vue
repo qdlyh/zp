@@ -285,7 +285,7 @@ export default {
           return config;
         }, function (error) {
           //当出现请求错误是做一些事
-          //alert('出错了!')
+          alert('出错了!')
           return Promise.reject(error);
         });
         this.$ajax({
@@ -345,7 +345,7 @@ export default {
           return config;
         }, function (error) {
           //当出现请求错误是做一些事
-          //alert('出错了!')
+          alert('出错了!')
           return Promise.reject(error);
         });
         this.$ajax({
@@ -380,7 +380,7 @@ export default {
         if (this.popup) {
           setTimeout(() => {
             this.popup = false;
-          }, 1000)
+          }, 1500)
         }
       },
       deep: true

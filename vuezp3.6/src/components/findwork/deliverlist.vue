@@ -1,15 +1,15 @@
 <template>
   <div>
     <div class="ifshow" v-if="ifshow==true">
-      <img src="../../images/80852461.png" alt="">
+      <p>您还没有投递公司简历</p>
     </div>
-    <div id="pullTo">
+    <div id="pullTo" v-else>
+      <loading v-show="loading"></loading>
       <pull-to :top-load-method="refresh" :bottom-load-method="loadmore">
         <div class="findwork">
           <div class="work-list">
             <div class="list-box" v-for="(item,index) in list" :key="index">
-              <a href="javascript:;" @click="go(item)">
-                <!-- <router-link :to="{ name: 'mydeliver', params: { id: item.itemId }}"> -->
+              <router-link :to="{ name: 'mydeliver', params: { id: item.itemId }}">
                 <span class="left">
                   <img v-lazy="item.headimgurl" alt="">
                 </span>
@@ -22,15 +22,13 @@
                   <!-- <p>{{item.typessTitle}}</p> -->
                   <p class="time">投递时间：{{item.createdDate}}</p>
                 </span>
-                <!-- </router-link> -->
-              </a>
+              </router-link>
             </div>
           </div>
         </div>
       </pull-to>
     </div>
     <gotop></gotop>
-    <loading v-show="!list.length"></loading>
   </div>
 </template>
 <script>
@@ -44,6 +42,7 @@ export default {
   data() {
     return {
       pageNow: 2,
+      loading: false,
       ifshow: false,
       list: []
     }
@@ -57,7 +56,7 @@ export default {
       return config;
     }, function (error) {
       //当出现请求错误是做一些事
-      //alert('出错了!')
+      alert('出错了!')
       return Promise.reject(error);
     });
     this.$ajax({
@@ -73,16 +72,15 @@ export default {
         console.log(error);
         //alert('网络错误，不能访问');
       });
-
-    if (sessionStorage.getItem("clientHeight") != null) {
-      document.getElementsByClassName("scroll-container")[0].scrollTop = parseInt(sessionStorage.getItem("clientHeight"))
-    }
   },
+  // updated() {
+  //   if (this.list.length == 0) {
+  //     this.ifshow = true;
+  //   } else {
+  //     this.ifshow = false;
+  //   }
+  // },
   methods: {
-    go(item) {
-      this.$router.push({ name: 'mydeliver', params: { id: item.itemId } });
-      sessionStorage.setItem("clientHeight", document.getElementsByClassName("scroll-container")[0].scrollTop);
-    },
     getList(loaded) {
       this.$ajax.interceptors.request.use((config) => {
         //在请求发送之前做一些事
@@ -91,7 +89,7 @@ export default {
         return config;
       }, function (error) {
         //当出现请求错误是做一些事
-        //alert('出错了!')
+        alert('出错了!')
         return Promise.reject(error);
       });
       this.$ajax({
@@ -129,9 +127,11 @@ export default {
         if (this.list.length == 0) {
           // console.log(this.list)
           this.ifshow = true;
+          this.loading = true;
         } else {
           // console.log(this.list.length)
           this.ifshow = false;
+          this.loading = false;
         }
       },
       deep: true
@@ -154,10 +154,11 @@ $text: #535353;
   height: 100%;
   position: fixed;
   background: #fff;
-  z-index: 9999;
-  text-align: center;
-  img {
-    margin-top: 10%;
+  p {
+    text-align: center;
+    padding-top: 50%;
+    font-size: 16px;
+    color: $text;
   }
 }
 .findwork {

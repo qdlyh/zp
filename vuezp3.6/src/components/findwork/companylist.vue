@@ -73,12 +73,22 @@
             </form>
         </div>
 
+        <div class="weui-box" v-show="weuiDialog">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd">
+                    <strong>您还没有注册</strong>
+                </div>
+                <div class="weui-dialog__bd">
+                    <p>是否转跳到注册信息列表？</p>
+                </div>
+                <div class="weui-dialog__ft">
+                    <p class="weui-dialog__btn" @click="weuiDialog = !weuiDialog">取消</p>
+                    <p class="weui-dialog__btn" @click="go()">确认</p>
+                </div>
+            </div>
+        </div>
         <Dialog :popup="popup" :text="text"></Dialog>
-
-        <Dialog titles="投递失败" @ok="Onaffirm()" @cancel="Oncancel()" :dialogs="dialogs">
-            <p slot="texts">您还没有注册用户信息，是否现在前往注册信息？</p>
-        </Dialog>
-
         <loading v-if="!list.length"></loading>
     </div>
 </template>
@@ -90,7 +100,8 @@ export default {
             personalId: '',
             text: '',
             popup: false,
-            dialogs: false,
+            weuiDialog: false,
+            showall: false,
             list: []
         }
     },
@@ -128,24 +139,19 @@ export default {
                     if (response.data.state == 2) {
                         /* 没有注册的用户 */
                         this.popup = false;
-                        this.dialogs = true;
-                    } else {
-                        this.popup = true;
-                        this.text = response.data.message
+                        this.weuiDialog = true;
                     }
+                    this.popup = true;
+                    this.text = response.data.message
                 })
                 .catch(error => {
                     console.log(error);
                     //alert('网络错误，不能访问');
                 });
         },
-        Onaffirm() {
+        go() {
             /* 还没注册的用户点击确认的话转跳到注册地址 */
-            this.dialogs = false;
             window.location.href = "./lrsf.html#/regsel?userId=" + this.$parent.userId
-        },
-        Oncancel() {
-            this.dialogs = false;
         }
     },
     watch: {
@@ -155,7 +161,7 @@ export default {
                 if (this.popup) {
                     setTimeout(() => {
                         this.popup = false;
-                    }, 1000)
+                    }, 1500)
                 }
             },
             deep: true

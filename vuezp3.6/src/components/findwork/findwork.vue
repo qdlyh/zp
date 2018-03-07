@@ -20,11 +20,10 @@
         </select>
       </form>
       <!-- <span>值：{{myCity}}{{myArea}}{{search}}</span> -->
-      <div class="ifshow" v-show="ifshow">
-        <!-- <p>抱歉！该地区没有找到您需要的职位</p> -->
-        <img src="../../images/21976863.png" alt="">
+      <div class="ifshow" v-if="ifshow==true">
+        <p>抱歉！该地区没有找到您需要的职位</p>
       </div>
-      <div id="pullTo">
+      <div id="pullTo" v-else>
         <pull-to :top-load-method="refresh" :bottom-load-method="loadmore">
           <div class="work-list">
             <div class="list-box" v-for="(item,index) in list" :key="index">
@@ -49,7 +48,6 @@
       </div>
       <gotop></gotop>
       <loading v-show="!list.length"></loading>
-      <!-- <loading v-show="loading"></loading> -->
     </div>
   </div>
 </template>
@@ -64,7 +62,6 @@ export default {
   data() {
     return {
       ifshow: false,
-      loading: false,
       pageNow: 2,
       search: '',
       myCity: '',
@@ -100,7 +97,7 @@ export default {
       ],
     }
   },
-  activated() {
+  mounted() {
     this.$ajax({
       method: 'get',
       url: this.psta + '/base/itemInfo',
@@ -124,17 +121,12 @@ export default {
         console.log(error);
         //alert('网络错误，不能访问');
       });
-
-    if (sessionStorage.getItem("clientHeight") != null) {
-      document.getElementsByClassName("scroll-container")[0].scrollTop = parseInt(sessionStorage.getItem("clientHeight"))
-    }
   },
   methods: {
     go(item) {
       localStorage.setItem("myCity", this.myCity);
       localStorage.setItem("myArea", this.myArea);
       this.$router.push({ name: 'companylist', params: { id: item.itemId } });
-      sessionStorage.setItem("clientHeight", document.getElementsByClassName("scroll-container")[0].scrollTop);
     },
     getlist(loaded) {
       this.$ajax.interceptors.request.use((config) => {
@@ -144,7 +136,7 @@ export default {
         return config;
       }, function (error) {
         //当出现请求错误是做一些事
-        //alert('出错了!')
+        alert('出错了!')
         return Promise.reject(error);
       });
       this.$ajax({
@@ -190,8 +182,6 @@ export default {
           } else {
             this.myArea = this.cityData[i].menus[0].id
           }
-          /* 切换城市重置滚动条高度 */
-          sessionStorage.setItem("clientHeight", document.getElementsByClassName("scroll-container")[0].scrollTop);
           return this.cityData[i].menus;
         }
       }
@@ -283,9 +273,11 @@ $text: #535353;
     position: fixed;
     z-index: 9999;
     background: #fff;
-    text-align: center;
-    img {
-      margin-top: 10%;
+    p {
+      text-align: center;
+      padding-top: 50%;
+      font-size: 16px;
+      color: $text;
     }
   }
   .work-list {

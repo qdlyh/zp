@@ -9,8 +9,8 @@ import Dialog from "./common/Dialog";
 // import CropperCss from '../static/cropicrec.css'
 import axios from 'axios'
 Vue.prototype.$ajax = axios
-// Vue.prototype.psta =  process.env.NODE_ENV=='production'? '':'/proxyapi';
-Vue.prototype.psta =  process.env.NODE_ENV=='production'? 'http://huipin.birds-resort.com/mvc/':'/proxyapi';
+Vue.prototype.psta =  process.env.NODE_ENV=='production'? '':'/proxyapi';
+// Vue.prototype.psta =  process.env.NODE_ENV=='production'? 'http://huipin.birds-resort.com/mvc/':'/proxyapi';
 Vue.config.productionTip = false
 Vue.component('loading',loading)
 Vue.component('Dialog',Dialog)

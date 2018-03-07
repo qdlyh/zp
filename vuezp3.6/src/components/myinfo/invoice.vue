@@ -51,13 +51,14 @@ export default {
 					this.telephone = temp.telephone;
 					this.bank = temp.bank;
 					this.banknum = temp.banknum;
+
 				}
 			})
 	},
 	methods: {
 		save() {
 			let have = true;
-			if (this.name.length == 0 || this.number.length == 0 || this.address.length == 0 || this.telephone.length == 0 || this.bank.length == 0 || this.banknum.length == 0) {
+			if (this.id == null || this.name.length == 0 || this.number.length == 0 || this.address.length == 0 || this.telephone.length == 0 || this.bank.length == 0 || this.banknum.length == 0) {
 				have = false;
 				this.popup = true;
 				this.text = '请填写完整的发票信息'
@@ -80,7 +81,7 @@ export default {
 					return config;
 				}, function (error) {
 					//当出现请求错误是做一些事
-					//alert('出错了!')
+					alert('出错了!')
 					return Promise.reject(error);
 				});
 				this.$ajax.post(this.psta + '/invoice/open ', params)
@@ -99,7 +100,7 @@ export default {
 				if (this.popup) {
 					setTimeout(() => {
 						this.popup = false;
-					}, 1000)
+					}, 1500)
 				}
 			},
 			deep: true

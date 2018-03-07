@@ -26,7 +26,7 @@ const router = new Router({
       component: myinfo,
       meta: {
         title: '个人简历',
-        keepAlive: false // 需要被缓存
+        keepAlive: true // 需要被缓存
       }
     },
     {
