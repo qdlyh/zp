@@ -2,7 +2,6 @@
     <div>
         <!-- <h2>{{$route.query.personalId}}</h2> -->
         <!-- <h2>{{ $route.params.id }}</h2> -->
-        <!-- <h2>{{ this.$parent.userId }}</h2> -->
         <div class="myinfo" v-for="(item,index) in list" :key="index">
             <form action="">
                 <div class="top-img">
@@ -96,7 +95,14 @@ export default {
     },
     activated() {
         this.itemId = this.$route.params.id                //列表路径id
-        this.personalId = this.$route.query.personalId     //url参数
+
+        if (sessionStorage.getItem("personalId") != null) {
+            this.personalId = sessionStorage.getItem("personalId");
+        } else {
+            this.personalId = this.$route.query.personalId; //url参数
+            sessionStorage.setItem("personalId", this.personalId);
+        }
+        
         this.$ajax({
             method: 'get',
             url: this.psta + '/item/detail?itemId=' + this.itemId,

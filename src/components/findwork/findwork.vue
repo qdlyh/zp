@@ -1,9 +1,5 @@
 <template>
   <div>
-    <!-- <h2>{{$route.query.appId}}x1</h2>
-    <h2>{{$route.query.timestamp}}x2</h2>
-    <h2>{{$route.query.noncestr}}x3</h2>
-    <h2>{{$route.query.signature}}x4</h2> -->
     <div class="findwork">
       <form action="" id="form">
         <span>市:</span>
@@ -114,6 +110,10 @@ export default {
         this.searchData.unshift({ title: '所有', id: 0 })
         this.search = this.searchData[0].id    //类型
 
+        for (let i = 0; i < this.cityData.length; i++) {
+          this.cityData[i].menus.unshift({ title: '所有区', id: 0 })
+        }
+
         if (localStorage.getItem("myCity") != null && localStorage.getItem("myArea") != null) {
           this.myCity = localStorage.getItem("myCity")
           this.myArea = localStorage.getItem("myArea")
@@ -188,11 +188,25 @@ export default {
         if (this.cityData[i].id == this.myCity) {
           /* 判断城市是否和存储城市id相等,相等返回存储城市id，否则返回第1个城市id */
           if (this.myCity == localStorage.getItem("myCity")) {
-            this.myArea = localStorage.getItem("myArea")
+            this.myArea = localStorage.getItem("myArea");
           } else {
-            this.myArea = this.cityData[i].menus[0].id
-            /* 切换城市重置滚动条高度 */
-            document.getElementsByClassName("scroll-container")[0].scrollTop = 0;
+            this.myArea = this.cityData[i].menus[0].id;
+            setTimeout(() => {
+              /* 地区为所有区的时候发送请求，返回全部区数据 */
+              this.pageNow = 2;  //切换初始化分页 
+              document.getElementsByClassName("scroll-container")[0].scrollTop = 0;  /* 切换地区重置滚动条高度 */
+              this.$ajax({
+                method: 'get',
+                url: this.psta + '/item/list' + '?city=' + this.myCity + '&area=' + this.myArea + '&typess=' + this.search,
+              })
+                .then(response => {
+                  this.list = response.data.object.list;
+                })
+                .catch(error => {
+                  console.log(error);
+                  //alert('网络错误，不能访问');
+                });
+            }, 0)
           }
           return this.cityData[i].menus;
         }
